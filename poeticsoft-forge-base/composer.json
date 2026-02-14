@@ -1,0 +1,21 @@
+{
+    "name": "poeticsoft/forge-base",
+    "description": "Base module for Poeticsoft Forge ecosystem",
+    "type": "wordpress-plugin",
+    "version": "0.0.0",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+      {
+        "name": "Poeticsoft Team",
+        "email": "alberto@poeticsoft.com"
+      }
+    ],
+    "require": {
+      "php": ">=7.4"
+    },
+    "autoload": {
+      "psr-4": {
+        "Poeticsoft\\Forge\\": "class/Forge/"
+      }
+    }
+}
