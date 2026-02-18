@@ -1,70 +1,27 @@
 # Poeticsoft Forge Base
 
-Plugin hijo del ecosistema Poeticsoft Heart que implementa un panel de administración básico.
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D7.4-8892bf.svg)](https://php.net)
+[![WordPress](https://img.shields.io/badge/wordpress-%3E%3D5.8-0073aa.svg)](https://wordpress.org)
+[![License](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-## Requisitos
+Módulo base esencial para el ecosistema **Poeticsoft Forge**. Este plugin actúa como el cimiento técnico para todos los módulos secundarios, proporcionando la interfaz de integración con el motor central **Poeticsoft Heart**.
 
-- WordPress 5.8 o superior
-- PHP 7.4 o superior
-- **Poeticsoft Heart** (plugin base requerido)
+## 🏗️ Arquitectura
 
-## Características
+Este plugin sigue los principios de la **Arquitectura Poeticsoft**:
+- **Inyección de Dependencias**: Recibe el motor `Engine` a través de un contrato formal.
+- **Patrón Singleton**: Garantiza una única instancia del módulo en ejecución.
+- **Estándar PSR-12**: Código limpio, legible y profesional.
 
-- ✅ Implementa la interfaz `ModuleInterface` de Poeticsoft Heart
-- ✅ Se registra automáticamente con el Engine de Heart
-- ✅ Panel de administración básico con dashboard
-- ✅ Muestra información del sistema y módulos registrados
-- ✅ Arquitectura extensible para agregar más funcionalidades
+## ⚙️ Requisitos
 
-## Instalación
+Este módulo **no funciona de forma independiente**. Requiere:
+1. [Poeticsoft Heart](https://github.com/albertomoralpoeticsoft/poeticsoft-heart) (Plugin Núcleo) activado.
+2. PHP 7.4 o superior.
+3. Composer para la gestión de dependencias.
 
-1. Asegúrate de tener instalado y activado el plugin **Poeticsoft Heart**
-2. Sube la carpeta `poeticsoft-forge-base` al directorio `/wp-content/plugins/`
-3. Activa el plugin desde el panel de administración de WordPress
+## 🚀 Instalación
 
-## Uso
-
-Una vez activado, encontrarás un nuevo menú "Forge" en el panel de administración de WordPress con las siguientes opciones:
-
-- **Dashboard**: Vista general del sistema y módulos registrados
-
-## Desarrollo
-
-### Estructura de Archivos
-
-```
-poeticsoft.forge.base/
-├── poeticsoft-forge-base/
-│   ├── class/
-│   │   └── Forge/
-│   │       └── Base.php
-│   ├── languages/
-│   ├── composer.json
-│   ├── poeticsoft-forge-base.php
-│   └── README.md
-├── .gitignore
-└── poeticsoft.forge.base.code-workspace
-```
-
-### Agregar Nuevas Funcionalidades
-
-Para agregar nuevas páginas al panel de administración, edita el método `register_admin_menu()` en `class/Forge/Base.php`:
-
-```php
-add_submenu_page(
-    'poeticsoft-forge',
-    'Nueva Página',
-    'Nueva Página',
-    'manage_options',
-    'poeticsoft-forge-nueva',
-    [$this, 'render_nueva_pagina']
-);
-```
-
-## Licencia
-
-GPL-3.0-or-later
-
-## Autor
-
-Poeticsoft Team - [https://poeticsoft.com/team](https://poeticsoft.com/team)
+1. Clona el repositorio en tu carpeta de plugins de WordPress:
+   ```bash
+   git clone [https://github.com/albertomoralpoeticsoft/poeticsoft-forge-base.git](https://github.com/albertomoralpoeticsoft/poeticsoft-forge-base.git)
