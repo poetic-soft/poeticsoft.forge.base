@@ -15,81 +15,71 @@
  * Domain Path: /languages
  */
 
-namespace Poeticsoft;
+namespace Poeticsoft\Forge;
 
-// Security check
-
+/**
+ * Verificación de seguridad: Evitar acceso directo.
+ */
 if (!defined('ABSPATH')) {
-    
-  exit;
+    exit;
 }
 
-// Check if Poeticsoft Heart is active
-
-add_action(
-  'admin_init', 
-  function() {
-
+/**
+ * Control de Dependencia: Verifica si Poeticsoft Heart está activo.
+ * Si no está presente, el plugin se desactiva automáticamente con un aviso.
+ */
+add_action('admin_init', function () {
     if (!class_exists('\Poeticsoft\Heart\Engine')) {
+        deactivate_plugins(plugin_basename(__FILE__));
 
-      deactivate_plugins(plugin_basename(__FILE__));
-
-      add_action(
-        'admin_notices', 
-        function() {
-          echo '<div class="error"><p>';
-          echo '<strong>Poeticsoft Forge Base</strong> requiere que el plugin <strong>Poeticsoft Heart</strong> esté activado.';
-          echo '</p></div>';
-        }
-      );
-
-      return;
+        add_action('admin_notices', function () {
+            $message = __(
+                'Poeticsoft Forge Base requiere que el plugin Poeticsoft Heart esté activado.',
+                'poeticsoft-forge-base'
+            );
+            echo '<div class="error"><p><strong>' . esc_html($message) . '</strong></p></div>';
+        });
     }
-  }
-);
-
-// Load autoloader if available
-
-if (file_exists(__DIR__ . '/vendor/autoload.php')) {
-
-  require_once __DIR__ . '/vendor/autoload.php';
-}
-
-// Register module with Poeticsoft Heart
-
-add_action(
-  'poeticsoft_heart_register',
-  function($engine) {
-
-    // Load class only when Heart is available
-    require_once __DIR__ . '/class/Forge/Base.php';
-
-    $forge = new \Poeticsoft\Forge\Base();
-    $engine->registrar_forge('forge-base', $forge);
-  },
-  10
-);
-
-// Activation hook
-
-register_activation_hook(__FILE__, function() {
-
-  if (!class_exists('\Poeticsoft\Heart\Engine')) {
-
-    wp_die(
-      'Este plugin requiere Poeticsoft Heart para funcionar.',
-      'Dependencia Requerida',
-      ['back_link' => true]
-    );
-  }
 });
 
-// Deactivation hook
+/**
+ * Carga del autoloader de Composer para este módulo.
+ */
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
 
-register_deactivation_hook(__FILE__, function() {
+/**
+ * Registro del módulo en el motor central (Heart).
+ * * Se engancha al action personalizado 'poeticsoft_heart_register'
+ * que dispara el Engine durante su inicialización.
+ */
+add_action('poeticsoft_heart_register', function ($engine) {
+    // Usamos la clase Base del módulo actual
+    $forge = \Poeticsoft\Forge\Base::instance();
+    $engine->registrar_forge('forge-base', $forge);
+}, 10);
 
-  if (function_exists('wp_cache_flush')) {
-      
-    wp_cache_flush();
-  }
+/**
+ * Hook de activación.
+ * Previene la activación si el núcleo no está presente.
+ */
+register_activation_hook(__FILE__, function () {
+    if (!class_exists('\Poeticsoft\Heart\Engine')) {
+        wp_die(
+            esc_html__('Este plugin requiere Poeticsoft Heart para funcionar.', 'poeticsoft-forge-base'),
+            esc_html__('Dependencia Requerida', 'poeticsoft-forge-base'),
+            ['back_link' => true]
+        );
+    }
+});
+
+/**
+ * Hook de desactivación.
+ * Limpia la caché del sistema para evitar residuos de hooks.
+ */
+register_deactivation_hook(__FILE__, function () {
+    if (function_exists('wp_cache_flush')) {
+        wp_cache_flush();
+    }
 });
