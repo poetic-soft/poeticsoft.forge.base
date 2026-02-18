@@ -15,7 +15,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Poeticsoft\\Forge\\": "class/Forge/"
+      "Poeticsoft\\Forge\\Base\\": "class/Forge/Base"
     }
   },
   "require-dev": {

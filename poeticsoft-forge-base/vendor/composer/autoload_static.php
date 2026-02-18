@@ -9,20 +9,20 @@ class ComposerStaticInit844d9cebcd216dec825d5173cd5304f0
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
-            'Poeticsoft\\Forge\\' => 17,
+            'Poeticsoft\\Forge\\Base\\' => 22,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Poeticsoft\\Forge\\' => 
+        'Poeticsoft\\Forge\\Base\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/class/Forge',
+            0 => __DIR__ . '/../..' . '/class/Forge/Base',
         ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Poeticsoft\\Forge\\Base' => __DIR__ . '/../..' . '/class/Forge/Base.php',
+        'Poeticsoft\\Forge\\Base\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/Main.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

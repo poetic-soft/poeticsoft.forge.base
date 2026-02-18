@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Poeticsoft\\Forge\\' => array($baseDir . '/class/Forge'),
+    'Poeticsoft\\Forge\\Base\\' => array($baseDir . '/class/Forge/Base'),
 );

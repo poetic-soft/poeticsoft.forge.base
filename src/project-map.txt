@@ -1,0 +1,55 @@
+|---poeticsoft.forge.base
+    · .gitignore
+    \---.vscode
+    |   · sftp.json
+    · package-lock.json
+    · package.json
+    \---poeticsoft-forge-base
+    |   \---assets
+    |   \---block
+    |   |   \---base
+    |   |   |   · block.json
+    |   |   |   \---build
+    |   |   |   |   · editor.css
+    |   |   |   |   · editor.css.map
+    |   |   |   |   · editor.js
+    |   |   |   |   · editor.js.map
+    |   |   |   |   · view.css
+    |   |   |   |   · view.css.map
+    |   |   |   |   · view.js
+    |   |   |   |   · view.js.map
+    |   |   |   · render.php
+    |   \---class
+    |   |   \---Forge
+    |   |   |   \---Base
+    |   |   |   |   · Main.php
+    |   · composer.json
+    |   · composer.lock
+    |   · errors.txt
+    |   \---languages
+    |   · phpcs.xml
+    |   · poeticsoft-forge-base.php
+    |   · README.md
+    |   · uninstall.php
+    · poeticsoft.forge.base.code-workspace
+    \---src
+    |   \---admin
+    |   |   · main.js
+    |   |   · main.scss
+    |   \---block
+    |   |   \---base
+    |   |   |   · editor.js
+    |   |   |   · editor.scss
+    |   |   |   · style.scss
+    |   |   |   · view.js
+    |   |   |   · view.scss
+    |   \---common
+    |   \---frontend
+    |   |   · main.js
+    |   |   · main.scss
+    |   · map.js
+    |   · project-map.txt
+    |   \---style
+    |   |   · mixin.scss
+    |   |   · root.scss
+    · webpack.config.js

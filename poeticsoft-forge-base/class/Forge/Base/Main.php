@@ -1,6 +1,6 @@
 <?php
 
-namespace Poeticsoft\Forge;
+namespace Poeticsoft\Forge\Base;
 
 use Poeticsoft\Heart\ForgeInterface;
 
@@ -15,7 +15,7 @@ use function Poeticsoft\Heart;
  * @package Poeticsoft\Forge
  * @since 0.0.0
  */
-class Base implements ForgeInterface
+class Main implements ForgeInterface
 {
     /** @var self|null Instancia única */
     private static $instance = null;

@@ -4,7 +4,7 @@
  * Plugin Name: Poeticsoft Forge Base
  * Plugin URI: https://poeticsoft.com/plugins/poeticsoft-forge-base
  * Description: Base module for Poeticsoft Forge with admin panel functionality
- * Version: 0.0.1
+ * Version: 0.0.0
  * Requires at least: 5.8
  * Requires PHP: 7.4
  * Author: Poeticsoft Team
@@ -15,7 +15,10 @@
  * Domain Path: /languages
  */
 
-namespace Poeticsoft\Forge;
+/**
+ * Update composer classmap
+ * composer dump-autoload -o
+ */
 
 /**
  * Verificación de seguridad: Evitar acceso directo.
@@ -56,7 +59,7 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
  */
 add_action('poeticsoft_heart_register', function ($engine) {
     // Usamos la clase Base del módulo actual
-    $forge = \Poeticsoft\Forge\Base::instance();
+    $forge = \Poeticsoft\Forge\Base\Main::instance();
     $engine->registrar_forge('forge-base', $forge);
 }, 10);
 

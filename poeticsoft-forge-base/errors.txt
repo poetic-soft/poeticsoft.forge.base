@@ -1,0 +1,54 @@
+Análisis del Plugin: Poeticsoft Forge Base
+==========================================
+
+ERRORES DE CALIDAD ALTA
+-----------------------
+
+4. Falta load_plugin_textdomain()
+   Archivo: poeticsoft-forge-base.php
+   El plugin declara Text Domain: poeticsoft-forge-base y usa __() con ese dominio,
+   pero nunca llama a load_plugin_textdomain(). Las traducciones no se cargarán jamás.
+
+ERRORES DE CALIDAD MEDIA
+------------------------
+
+7. Sin constantes del plugin
+   Archivo: poeticsoft-forge-base.php
+   WordPress convention exige definir constantes para evitar rutas hardcoded en otros módulos:
+   - POETICSOFT_FORGE_BASE_VERSION
+   - POETICSOFT_FORGE_BASE_PATH
+   - POETICSOFT_FORGE_BASE_URL
+
+ERRORES DE CALIDAD BAJA
+-----------------------
+
+8. Singleton sin protección contra clonación/deserialización
+   Archivo: class/Forge/Base/Main.php
+   El patrón Singleton implementado puede romperse. Deben añadirse los métodos
+   __clone() y __wakeup() para protegerlo.
+
+9. Declaraciones de tipo PHP 7.4 no usadas
+   Archivo: class/Forge/Base/Main.php
+   El requisito mínimo es PHP 7.4 que soporta typed properties y return types, pero no
+   se usan en la propiedad $engine ni en el método init().
+
+10. Falta fichero phpcs.xml
+    Los scripts phpcbf y phpcs en composer.json se ejecutan sin configuración, usando el
+    estándar por defecto (PEAR), que probablemente no es el deseado. Debería existir un
+    phpcs.xml con el estándar apropiado (WordPress Coding Standards o PSR-12).
+
+RESUMEN DE PRIORIDADES
+----------------------
+
+#  | Descripción                              | Severidad
+---|------------------------------------------|-----------
+1  | Admin notice no se muestra               | CRÍTICA
+2  | use function incorrecto -> Fatal Error   | CRÍTICA
+3  | Versiones inconsistentes                 | Alta
+4  | load_plugin_textdomain ausente           | Alta
+5  | wp_cache_flush agresivo                  | Alta
+6  | vendor/ en git                           | Alta
+7  | Sin constantes del plugin                | Media
+8  | Singleton sin __clone/__wakeup           | Baja
+9  | Sin typed properties/return types        | Baja
+10 | Sin phpcs.xml                            | Baja
