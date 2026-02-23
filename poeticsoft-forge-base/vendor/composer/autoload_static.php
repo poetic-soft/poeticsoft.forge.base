@@ -9,14 +9,14 @@ class ComposerStaticInit844d9cebcd216dec825d5173cd5304f0
     public static $prefixLengthsPsr4 = array (
         'P' => 
         array (
-            'Poeticsoft\\Forge\\Base\\' => 22,
+            'Poeticsoft\\' => 11,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Poeticsoft\\Forge\\Base\\' => 
+        'Poeticsoft\\' => 
         array (
-            0 => __DIR__ . '/../..' . '/class/Forge/Base',
+            0 => __DIR__ . '/../..' . '/class',
         ),
     );
 

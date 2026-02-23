@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "tree": "node src/map.js",
-    "blockbase": "webpack --env=block-base"
+    "blockbase": "webpack --env=block-base",
+    "admin": "webpack --env=admin",
+    "frontend": "webpack --env=frontend"
   },
   "dependencies": {
     "@babel/core": "^7.18.10",

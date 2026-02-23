@@ -1,0 +1,13 @@
+========================================
+ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-BASE
+Generado el: 2026-02-23 01:03:51
+========================================
+
+├── assets
+├── class
+│   └── Forge
+│       └── Base
+│           └── Main.php
+├── composer.json
+├── poeticsoft-forge-base.php
+└── uninstall.php

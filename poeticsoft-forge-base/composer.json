@@ -15,20 +15,31 @@
   },
   "autoload": {
     "psr-4": {
-      "Poeticsoft\\Forge\\Base\\": "class/Forge/Base"
+      "Poeticsoft\\": "class/"
     }
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^4.0"
   },
-  "scripts": {
-    "format": "phpcbf .",
-    "lint": "phpcs ."
-  },
   "config": {
+    "optimize-autoloader": true,
     "allow-plugins": {
       "composer/installers": true
-    },
-    "optimize-autoloader": true
+    }
+  },
+  "scripts": {
+    "format": "phpcbf .",
+    "lint": "phpcs .",
+    "fix": [
+        "@format",
+        "@lint"
+    ],
+    "make-pot": "vendor\\bin\\wp.bat i18n make-pot . languages/poeticsoft-forge-base.pot --exclude=vendor",  
+    "estructura": "php tools\\estructura.php",
+    "plugin": "php tools\\plugin.php",
+    "doc": [
+        "@estructura",
+        "@plugin"
+    ]
   }
 }

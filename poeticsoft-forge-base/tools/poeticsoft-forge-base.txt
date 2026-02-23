@@ -1,0 +1,348 @@
+============================================================
+CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
+Generado el: 2026-02-23 01:03:52
+============================================================
+
+class\Forge\Base\Main.php
+----------------------------------------------
+Archivo: class\Forge\Base\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base;
+
+use Poeticsoft\Heart\ForgeInterface;
+use Poeticsoft\Heart\Engine;
+
+/**
+ * Clase Base - Implementación del módulo Forge Base.
+ *
+ * Este módulo sirve como cimiento para el ecosistema Forge, demostrando
+ * la integración con el motor central de Poeticsoft.
+ *
+ * @package Poeticsoft\Forge
+ * @since 0.0.0
+ */
+class Main implements ForgeInterface
+{
+    /** @var self|null Instancia única */
+    private static $instance = null;
+
+    /** @var \Poeticsoft\Heart\Engine Instancia del motor central */
+    private $engine;
+
+    /** @var string Nombre del módulo */
+    private $name;
+
+    /** @var string Versión del módulo */
+    private $version;
+
+    /** @var string Descripción del módulo */
+    private $description;
+
+    /** @var string Path del plugin para el calculo de rutas */
+    private $plugin_path;
+
+    /** @var string Uri del plugin para el calculo de urls */
+    private $plugin_uri;
+
+    /** @var boolean Declara si se han creado blocks para el proceso de registro */
+    private $has_blocks;
+
+    /** @var boolean Declara si se han creado ui admin para el proceso de carga */
+    private $has_ui_admin;
+
+    /** @var boolean Declara si se han creado ui frontend para el proceso de carga */
+    private $has_ui_frontend;
+
+    /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
+    private $has_api;
+
+    /**
+     * Obtiene la instancia única (Singleton).
+     *
+     * @return self
+     */
+    public static function instance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    /**
+     * Constructor privado.
+     * Define los metadatos iniciales del módulo.
+     */
+    private function __construct()
+    {
+        
+        $this->version = '0.0.0';
+        $this->name = 'Forge Base';
+        $this->description = 'Módulo base del ecosistema Forge';
+        $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-base';
+        $this->plugin_uri  = WP_PLUGIN_URL . '/poeticsoft-forge-base';
+        $this->has_blocks  = true;
+        $this->has_ui_admin  = true;
+        $this->has_ui_frontend  = false;
+        $this->has_api     = false;
+    }
+    
+    /**
+     * Getters
+     *
+     * @since 0.0.0
+     */
+
+    /** @return string */
+    public function get_name()
+    {
+        return $this->name;
+    }
+
+    /** @return string */
+    public function get_version()
+    {
+        return $this->version;
+    }
+
+    /** @return string */
+    public function get_description()
+    {
+        return $this->description;
+    }
+    
+    /** @return string */
+    public function get_plugin_path()
+    {
+        return $this->plugin_path;
+    }
+    
+    /** @return string */
+    public function get_plugin_uri()
+    {
+        return $this->plugin_uri;
+    }
+    
+    /** @return boolean */
+    public function get_has_blocks()
+    {
+        return $this->has_blocks;
+    }
+    
+    /** @return boolean */
+    public function get_has_ui_admin()
+    {
+        return $this->has_ui_admin;
+    }
+    
+    /** @return boolean */
+    public function get_has_ui_frontend()
+    {
+        return $this->has_ui_frontend;
+    }
+    
+    /** @return boolean */
+    public function get_has_api()
+    {
+        return $this->has_api;
+    }
+
+    /**
+     * Inicializa el módulo.
+     *
+     * Invocado por el Engine de Heart durante el registro.
+     *
+     * @param \Poeticsoft\Heart\Engine $engine Instancia del motor.
+     * @return void
+     */
+    public function init(Engine $engine)
+    {
+        $this->engine = $engine;
+
+        // $this->engine->logging->log(
+        //     'Forge Base module initialized via Heart helper',
+        //     'INFO',
+        //     'FORGE-BASE'
+        // );
+
+        // // Uso directo de la instancia del motor inyectada
+        // $this->engine->logging->log(
+        //     'Módulo registrado: ' . $this->name,
+        //     'INFO',
+        //     'FORGE-BASE'
+        // );
+    }
+}
+
+
+============================================================
+
+poeticsoft-forge-base.php
+----------------------------------------------
+Archivo: poeticsoft-forge-base.php
+----------------------------------------------
+
+<?php
+
+/**
+ * Plugin Name: Poeticsoft Forge Base
+ * Plugin URI: https://poeticsoft.com/plugins/poeticsoft-forge-base
+ * Description: Base module for Poeticsoft Forge with admin panel functionality
+ * Version: 0.0.0
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ * Author: Poeticsoft Team
+ * License: GPL-3.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Author URI: https://poeticsoft.com/team
+ * Text Domain: poeticsoft-forge-base
+ * Domain Path: /languages
+ */
+
+/**
+ * Update composer classmap
+ * composer dump-autoload -o
+ */
+
+/**
+ * Verificación de seguridad: Evitar acceso directo.
+ */
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Control de Dependencia: Verifica si Poeticsoft Heart está activo.
+ * Si no está presente, el plugin se desactiva automáticamente con un aviso.
+ */
+add_action(
+    'admin_init',
+    function () {
+    
+        if (!class_exists('\Poeticsoft\Heart\Engine')) {
+            
+            deactivate_plugins(plugin_basename(__FILE__));
+
+            add_action('admin_notices', function () {
+                
+                $message = __(
+                    'Poeticsoft Forge Base requiere que el plugin Poeticsoft Heart esté activado.',
+                    'poeticsoft-forge-base'
+                );
+                
+                echo '<div class="error"><p><strong>' . esc_html($message) . '</strong></p></div>';
+            });
+        }
+    }
+);
+
+/**
+ * Carga del autoloader de Composer para este módulo.
+ */
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
+/**
+ * Registro del módulo en el motor central (Heart).
+ * * Se engancha al action personalizado 'poeticsoft_heart_register'
+ * que dispara el Engine durante su inicialización.
+ */
+
+add_action(
+    'poeticsoft_heart_register',
+    function ($engine) {
+    
+        // Usamos la clase Main del módulo actual
+        $forge = \Poeticsoft\Forge\Base\Main::instance();
+        $engine->registrar_forge('forge-base', $forge);
+    },
+    10
+);
+
+/**
+ * Hook de activación.
+ * Previene la activación si el núcleo no está presente.
+ */
+register_activation_hook(__FILE__, function () {
+    
+    if (!class_exists('\Poeticsoft\Heart\Engine')) {
+        
+        wp_die(
+            esc_html__(
+                'Este plugin requiere Poeticsoft Heart para funcionar.',
+                'poeticsoft-forge-base'
+            ),
+            esc_html__(
+                'Dependencia Requerida',
+                'poeticsoft-forge-base'
+            ),
+            ['back_link' => true]
+        );
+    }
+});
+
+/**
+ * Hook de desactivación.
+ * Limpia la caché del sistema para evitar residuos de hooks.
+ */
+register_deactivation_hook(__FILE__, function () {
+    
+    if (function_exists('wp_cache_flush')) {
+        
+        wp_cache_flush();
+    }
+});
+
+
+============================================================
+
+uninstall.php
+----------------------------------------------
+Archivo: uninstall.php
+----------------------------------------------
+
+<?php
+
+/**
+ * Script de desinstalación para Poeticsoft Forge Base.
+ *
+ * Este archivo se ejecuta cuando el usuario elimina el plugin desde el panel.
+ * Se encarga de limpiar cualquier rastro específico de este módulo.
+ *
+ * @package Poeticsoft\Forge
+ * @since 0.0.1
+ */
+
+namespace Poeticsoft\Forge;
+
+/**
+ * Verificación de seguridad: Salir si no es una llamada oficial de WordPress.
+ */
+if (!defined('WP_UNINSTALL_PLUGIN')) {
+    exit;
+}
+
+/**
+ * Limpieza de caché.
+ * Asegura que no queden rastros de hooks o estados del módulo en el sistema de objetos.
+ */
+if (function_exists('wp_cache_flush')) {
+    wp_cache_flush();
+}
+
+/**
+ * Nota para el futuro:
+ * Si este módulo llegara a guardar configuraciones en la base de datos (options),
+ * aquí es donde deberías añadir:
+ * delete_option('poeticsoft_forge_base_settings');
+ */
+
+
+============================================================
+
