@@ -194,7 +194,7 @@ function validate(uuid) {
   \*****************************************************/
 (module) {
 
-module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"poeticsoft/base","title":"Base","category":"poeticsoft","icon":"marker","description":"Block base for Poeticsoft Forge","keywords":[],"textdomain":"poeticsoft","version":"0.0.0","supports":{},"attributes":{"blockId":{"type":"string","default":""},"refClientId":{"type":"string","default":""}},"editorScript":"file:./build/editor.js","editorStyle":"file:./build/editor.css","viewScript":"file:./build/view.js","viewStyle":"file:./build/view.css","render":"file:./render.php"}');
+module.exports = /*#__PURE__*/JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"poeticsoft-forge-base/base","title":"Base","category":"poeticsoft-forge-base","icon":"marker","description":"Block base for Poeticsoft Forge","keywords":[],"textdomain":"poeticsoft","version":"0.0.0","supports":{},"attributes":{"blockId":{"type":"string","default":""},"refClientId":{"type":"string","default":""}},"editorScript":"file:./build/editor.js","editorStyle":"file:./build/editor.css","viewScript":"file:./build/view.js","viewStyle":"file:./build/view.css","render":"file:./render.php"}');
 
 /***/ }
 

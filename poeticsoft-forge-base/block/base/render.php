@@ -10,7 +10,7 @@ defined('ABSPATH') || exit;
 
 echo '<div
   id="' . $attributes['blockId'] . '"
-  class="wp-block-poeticsoft-base"
+  class="wp-block-poeticsoft-heart-base"
 >
     BASE
 </div>';

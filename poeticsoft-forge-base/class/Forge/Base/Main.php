@@ -22,6 +22,9 @@ class Main implements ForgeInterface
     /** @var \Poeticsoft\Heart\Engine Instancia del motor central */
     private $engine;
 
+    /** @var string Unique id del forge */
+    private $id;
+
     /** @var string Nombre del módulo */
     private $name;
 
@@ -65,20 +68,22 @@ class Main implements ForgeInterface
 
     /**
      * Constructor privado.
-     * Define los metadatos iniciales del módulo.
+     * 
      */
     private function __construct()
     {
         
+        // Metadatos
         $this->version = '0.0.0';
+        $this->id = 'forge-base';
         $this->name = 'Forge Base';
         $this->description = 'Módulo base del ecosistema Forge';
+        $this->plugin_uri  = '/wp-content/plugins/poeticsoft-forge-base';
         $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-base';
-        $this->plugin_uri  = WP_PLUGIN_URL . '/poeticsoft-forge-base';
         $this->has_blocks  = true;
         $this->has_ui_admin  = true;
         $this->has_ui_frontend  = true;
-        $this->has_api = false;
+        $this->has_api = true;
     }
     
     /**
@@ -86,6 +91,12 @@ class Main implements ForgeInterface
      *
      * @since 0.0.0
      */
+
+    /** @return string */
+    public function get_id()
+    {
+        return $this->id;
+    }
 
     /** @return string */
     public function get_name()

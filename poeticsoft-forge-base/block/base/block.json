@@ -1,9 +1,9 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 2,
-  "name": "poeticsoft/base",
+  "name": "poeticsoft-forge-base/base",
   "title": "Base",
-  "category": "poeticsoft",
+  "category": "poeticsoft-forge-base",
   "icon": "marker",
   "description": "Block base for Poeticsoft Forge",
   "keywords": [],

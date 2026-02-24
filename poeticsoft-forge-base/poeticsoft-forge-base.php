@@ -72,7 +72,7 @@ add_action(
     
         // Usamos la clase Main del módulo actual
         $forge = \Poeticsoft\Forge\Base\Main::instance();
-        $engine->registrar_forge('forge-base', $forge);
+        $engine->registrar_forge($forge->get_id(), $forge);
     },
     10
 );
