@@ -28,18 +28,22 @@
     }
   },
   "scripts": {
+    "make-pot": "vendor\\bin\\wp.bat i18n make-pot . languages/poeticsoft-forge-base.pot --exclude=vendor",  
     "format": "phpcbf .",
     "lint": "phpcs .",
     "fix": [
         "@format",
         "@lint"
     ],
-    "make-pot": "vendor\\bin\\wp.bat i18n make-pot . languages/poeticsoft-forge-base.pot --exclude=vendor",  
     "estructura": "php tools\\estructura.php",
     "plugin": "php tools\\plugin.php",
     "doc": [
         "@estructura",
         "@plugin"
+    ],
+    "fixdoc": [
+        "@fix",
+        "@doc"
     ]
   }
 }

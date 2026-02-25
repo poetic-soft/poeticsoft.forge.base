@@ -1,4 +1,5 @@
 <?php
+
 return array(
   'dependencies' => [
     'wp-i18n',
@@ -9,5 +10,5 @@ return array(
     'wp-components',
     'wp-core-data'
   ],
-  'version' => filemtime( __DIR__ . '/editor.js' ),
+  'version' => filemtime(__DIR__ . '/editor.js'),
 );

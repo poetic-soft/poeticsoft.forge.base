@@ -4,6 +4,7 @@ namespace Poeticsoft\Forge\Base;
 
 use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Heart\Engine;
+use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
  * Clase Base - Implementación del módulo Forge Base.
@@ -40,6 +41,9 @@ class Main implements ForgeInterface
     /** @var string Uri del plugin para el calculo de urls */
     private $plugin_uri;
 
+    /** @var array Slot de datos dinámicos del Forge para __get & __set*/
+    private $data = [];
+
     /** @var boolean Declara si se han creado blocks para el proceso de registro */
     private $has_blocks;
 
@@ -51,6 +55,9 @@ class Main implements ForgeInterface
 
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
+
+    /** @var API Endpoints del Forge */
+    private API $api;
 
     /**
      * Obtiene la instancia única (Singleton).
@@ -68,7 +75,7 @@ class Main implements ForgeInterface
 
     /**
      * Constructor privado.
-     * 
+     *
      */
     private function __construct()
     {
@@ -151,6 +158,44 @@ class Main implements ForgeInterface
     {
         return $this->has_api;
     }
+    
+    /** @return boolean */
+    public function get_api()
+    {
+        return $this->api;
+    }
+    
+    /**
+     * Magic Method __get
+     * * Permite acceder a propiedades dinámicas. Al usar '&', permitimos
+     * que PHP modifique el contenido del array retornado directamente.
+     *
+     * @param string $name Nombre de la propiedad (slot).
+     * @return mixed Referencia al valor en el array $data.
+     */
+    public function & __get(string $name)
+    {
+        // Si la clave no existe, la inicializamos como un array vacío.
+        // Esto permite hacer $forge->nuevo_slot[] = 'dato' sin errores.
+        if (!isset($this->data[$name])) {
+            
+            $this->data[$name] = [];
+        }
+
+        return $this->data[$name];
+    }
+
+    /**
+     * Magic Method __set
+     * * Permite asignar valores directamente a slots dinámicos.
+     *
+     * @param string $name  Nombre de la propiedad.
+     * @param mixed  $value Valor a asignar.
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->data[$name] = $value;
+    }
 
     /**
      * Inicializa el módulo.
@@ -163,6 +208,9 @@ class Main implements ForgeInterface
     public function init(Engine $engine)
     {
         $this->engine = $engine;
+        
+        // API
+        $this->api = new API($this, $engine);
 
         // $this->engine->logging->log(
         //     'Forge Base module initialized via Heart helper',

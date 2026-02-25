@@ -1,6 +1,167 @@
 ============================================================
 CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
-Generado el: 2026-02-23 01:03:52
+Generado el: 2026-02-25 02:28:54
+============================================================
+
+class\Forge\Base\API\Base.php
+----------------------------------------------
+Archivo: class\Forge\Base\API\Base.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base\API;
+
+/**
+ * Slot de endpoints plantilla para clasificar secciones de endpoints
+ *
+ * @since 0.0.0
+ */
+class Base
+{
+    protected $forge;
+
+    public function __construct($forge)
+    {
+        $this->forge = $forge;
+    }
+
+    /**
+     * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
+     * Este es el grupo base, plantilla para los grupos
+     */
+    public function get_routes()
+    {
+        
+        return [
+            'base' => [
+                [
+                    'path' => 'base/test/a',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_base_test_a'],
+                    'public' => true
+                ],
+                [
+                    'path' => 'base/test/b',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_base_test_a'],
+                    'public' => true
+                ]
+            ]
+        ];
+    }
+    
+    public function api_base_test_a(\WP_REST_Request $req)
+    {
+        
+        $res = new \WP_REST_Response();
+        
+        try {
+            
+            $res->set_data([
+                'slot' => 'base',
+                'name' => 'test b'
+            ]);
+            
+        } catch (Exception $e) {
+      
+            $res->set_status($e->getCode());
+            $res->set_data($e->getMessage());
+        }
+
+        return $res;
+    }
+    
+    public function api_base_test_b(\WP_REST_Request $req)
+    {
+        
+        $res = new \WP_REST_Response();
+        
+        try {
+            
+            $res->set_data([
+                'slot' => 'base',
+                'name' => 'test b'
+            ]);
+            
+        } catch (Exception $e) {
+      
+            $res->set_status($e->getCode());
+            $res->set_data($e->getMessage());
+        }
+
+        return $res;
+    }
+}
+
+
+============================================================
+
+class\Forge\Base\API\Main.php
+----------------------------------------------
+Archivo: class\Forge\Base\API\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base\API;
+
+use Poeticsoft\Heart\API\ForgeAPI;
+use Poeticsoft\Forge\Base\API\Base;
+
+class Main extends ForgeAPI
+{
+    public function get_endpoints(): array
+    {
+        // Aquí instanciarías tus clases que extiendan de Base.php
+        $base = new Base($this->forge);
+
+        return [
+            'v1' => array_merge(
+                $this->get_default_routes(),
+                $base->get_routes()
+            )
+        ];
+        
+        $this->test_auxiliar();
+    }
+
+    private function get_default_routes(): array
+    {
+        return [
+            'default' => [
+                [
+                    'path' => 'status',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_default_status'],
+                    'public' => true
+                ]
+            ]
+        ];
+    }
+    
+    public function api_default_status(\WP_REST_Request $req)
+    {
+        
+        $res = new \WP_REST_Response();
+        
+        try {
+            
+            $res->set_data([
+                'slot' => 'default'
+            ]);
+            
+        } catch (Exception $e) {
+      
+            $res->set_status($e->getCode());
+            $res->set_data($e->getMessage());
+        }
+
+        return $res;
+    }
+}
+
+
 ============================================================
 
 class\Forge\Base\Main.php
@@ -14,6 +175,7 @@ namespace Poeticsoft\Forge\Base;
 
 use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Heart\Engine;
+use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
  * Clase Base - Implementación del módulo Forge Base.
@@ -32,6 +194,9 @@ class Main implements ForgeInterface
     /** @var \Poeticsoft\Heart\Engine Instancia del motor central */
     private $engine;
 
+    /** @var string Unique id del forge */
+    private $id;
+
     /** @var string Nombre del módulo */
     private $name;
 
@@ -47,6 +212,9 @@ class Main implements ForgeInterface
     /** @var string Uri del plugin para el calculo de urls */
     private $plugin_uri;
 
+    /** @var array Slot de datos dinámicos del Forge para __get & __set*/
+    private $data = [];
+
     /** @var boolean Declara si se han creado blocks para el proceso de registro */
     private $has_blocks;
 
@@ -58,6 +226,9 @@ class Main implements ForgeInterface
 
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
+
+    /** @var API Endpoints del Forge */
+    private API $api;
 
     /**
      * Obtiene la instancia única (Singleton).
@@ -75,20 +246,22 @@ class Main implements ForgeInterface
 
     /**
      * Constructor privado.
-     * Define los metadatos iniciales del módulo.
+     *
      */
     private function __construct()
     {
         
+        // Metadatos
         $this->version = '0.0.0';
+        $this->id = 'forge-base';
         $this->name = 'Forge Base';
         $this->description = 'Módulo base del ecosistema Forge';
+        $this->plugin_uri  = '/wp-content/plugins/poeticsoft-forge-base';
         $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-base';
-        $this->plugin_uri  = WP_PLUGIN_URL . '/poeticsoft-forge-base';
         $this->has_blocks  = true;
         $this->has_ui_admin  = true;
-        $this->has_ui_frontend  = false;
-        $this->has_api     = false;
+        $this->has_ui_frontend  = true;
+        $this->has_api = true;
     }
     
     /**
@@ -96,6 +269,12 @@ class Main implements ForgeInterface
      *
      * @since 0.0.0
      */
+
+    /** @return string */
+    public function get_id()
+    {
+        return $this->id;
+    }
 
     /** @return string */
     public function get_name()
@@ -150,6 +329,44 @@ class Main implements ForgeInterface
     {
         return $this->has_api;
     }
+    
+    /** @return boolean */
+    public function get_api()
+    {
+        return $this->api;
+    }
+    
+    /**
+     * Magic Method __get
+     * * Permite acceder a propiedades dinámicas. Al usar '&', permitimos
+     * que PHP modifique el contenido del array retornado directamente.
+     *
+     * @param string $name Nombre de la propiedad (slot).
+     * @return mixed Referencia al valor en el array $data.
+     */
+    public function & __get(string $name)
+    {
+        // Si la clave no existe, la inicializamos como un array vacío.
+        // Esto permite hacer $forge->nuevo_slot[] = 'dato' sin errores.
+        if (!isset($this->data[$name])) {
+            
+            $this->data[$name] = [];
+        }
+
+        return $this->data[$name];
+    }
+
+    /**
+     * Magic Method __set
+     * * Permite asignar valores directamente a slots dinámicos.
+     *
+     * @param string $name  Nombre de la propiedad.
+     * @param mixed  $value Valor a asignar.
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->data[$name] = $value;
+    }
 
     /**
      * Inicializa el módulo.
@@ -162,6 +379,9 @@ class Main implements ForgeInterface
     public function init(Engine $engine)
     {
         $this->engine = $engine;
+        
+        // API
+        $this->api = new API($this, $engine);
 
         // $this->engine->logging->log(
         //     'Forge Base module initialized via Heart helper',
@@ -260,7 +480,7 @@ add_action(
     
         // Usamos la clase Main del módulo actual
         $forge = \Poeticsoft\Forge\Base\Main::instance();
-        $engine->registrar_forge('forge-base', $forge);
+        $engine->registrar_forge($forge->get_id(), $forge);
     },
     10
 );
