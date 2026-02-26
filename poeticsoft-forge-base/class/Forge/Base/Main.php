@@ -2,8 +2,9 @@
 
 namespace Poeticsoft\Forge\Base;
 
-use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Heart\Engine;
+use Poeticsoft\Heart\ForgeInterface;
+
 use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
@@ -53,6 +54,15 @@ class Main implements ForgeInterface
     /** @var boolean Declara si se han creado ui frontend para el proceso de carga */
     private $has_ui_frontend;
 
+    /** @var boolean Declara si se han creado overridings de core blocks */
+    private $has_ui_core_blocks;
+
+    /** @var boolean Declara si se han creado configuradores para core blocks */
+    private $has_ui_core_configs;
+
+    /** @var boolean Declara si se han creado metabopxes de edicion de posts */
+    private $has_metabox;
+
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
 
@@ -90,6 +100,9 @@ class Main implements ForgeInterface
         $this->has_blocks  = true;
         $this->has_ui_admin  = true;
         $this->has_ui_frontend  = true;
+        $this->has_ui_core_blocks  = true;
+        $this->has_ui_core_configs  = true;
+        $this->has_metabox  = true;
         $this->has_api = true;
     }
     
@@ -154,6 +167,24 @@ class Main implements ForgeInterface
     }
     
     /** @return boolean */
+    public function get_has_core_blocks()
+    {
+        return $this->has_ui_coreconfigs;
+    }
+    
+    /** @return boolean */
+    public function get_has_ui_core_configs()
+    {
+        return $this->has_ui_coreconfigs;
+    }
+    
+    /** @return boolean */
+    public function get_has_metabox()
+    {
+        return $this->has_metabox;
+    }
+    
+    /** @return boolean */
     public function get_has_api()
     {
         return $this->has_api;
@@ -210,7 +241,7 @@ class Main implements ForgeInterface
         $this->engine = $engine;
         
         // API
-        $this->api = new API($this, $engine);
+        $this->api = new API();
 
         // $this->engine->logging->log(
         //     'Forge Base module initialized via Heart helper',

@@ -2,6 +2,8 @@
 
 namespace Poeticsoft\Forge\Base\API;
 
+use Poeticsoft\Forge\Base\API\Main as API;
+
 /**
  * Slot de endpoints plantilla para clasificar secciones de endpoints
  *
@@ -10,10 +12,30 @@ namespace Poeticsoft\Forge\Base\API;
 class Base
 {
     protected $forge;
+    protected $api;
 
-    public function __construct($forge)
+    public function __construct($forge, API $parent)
     {
         $this->forge = $forge;
+        $this->api = $parent;
+    }
+
+    /**
+     * Lista de las rutas que no han de autenticarse
+     */
+    public function get_whitelist()
+    {
+        
+        return [
+            'base' => [
+                'public' => [
+                   'base/test/a'
+                ],
+                'logged' => [
+                    'base/test/b'
+                ]
+            ]
+        ];
     }
 
     /**
@@ -28,14 +50,12 @@ class Base
                 [
                     'path' => 'base/test/a',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a'],
-                    'public' => true
+                    'callback' => [$this, 'api_base_test_a']
                 ],
                 [
                     'path' => 'base/test/b',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a'],
-                    'public' => true
+                    'callback' => [$this, 'api_base_test_a']
                 ]
             ]
         ];
@@ -48,18 +68,19 @@ class Base
         
         try {
             
-            $res->set_data([
+            return $this->api->send_response([
                 'slot' => 'base',
-                'name' => 'test b'
+                'name' => 'test a'
             ]);
             
         } catch (Exception $e) {
       
-            $res->set_status($e->getCode());
-            $res->set_data($e->getMessage());
+            return $this->api->send_response(
+                $e->getMessage(),
+                $e->getCode() ?: 500,
+                false
+            );
         }
-
-        return $res;
     }
     
     public function api_base_test_b(\WP_REST_Request $req)
@@ -69,17 +90,18 @@ class Base
         
         try {
             
-            $res->set_data([
+            return $this->api->send_response([
                 'slot' => 'base',
                 'name' => 'test b'
             ]);
             
         } catch (Exception $e) {
       
-            $res->set_status($e->getCode());
-            $res->set_data($e->getMessage());
+            return $this->api->send_response(
+                $e->getMessage(),
+                $e->getCode() ?: 500,
+                false
+            );
         }
-
-        return $res;
     }
 }
