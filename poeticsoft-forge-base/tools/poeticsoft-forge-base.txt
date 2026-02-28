@@ -1,6 +1,6 @@
 ============================================================
 CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
-Generado el: 2026-02-25 12:07:44
+Generado el: 2026-02-27 14:07:53
 ============================================================
 
 class\Forge\Base\API\Base.php
@@ -31,6 +31,24 @@ class Base
     }
 
     /**
+     * Lista de las rutas que no han de autenticarse
+     */
+    public function get_whitelist()
+    {
+        
+        return [
+            'base' => [
+                'public' => [
+                   'base/test/a'
+                ],
+                'logged' => [
+                    'base/test/b'
+                ]
+            ]
+        ];
+    }
+
+    /**
      * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
      * Este es el grupo base, plantilla para los grupos
      */
@@ -42,14 +60,12 @@ class Base
                 [
                     'path' => 'base/test/a',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a'],
-                    'public' => true
+                    'callback' => [$this, 'api_base_test_a']
                 ],
                 [
                     'path' => 'base/test/b',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a'],
-                    'public' => true
+                    'callback' => [$this, 'api_base_test_a']
                 ]
             ]
         ];
@@ -117,21 +133,54 @@ use Poeticsoft\Forge\Base\API\Base;
 
 class Main extends ForgeAPI
 {
+    protected $forge;
+    protected $engine;
+    protected $base;
+
+    public function __construct($forge, $engine)
+    {
+        
+        // 1. Asignamos las propiedades de la clase padre (ForgeAPI)
+        $this->forge = $forge;
+        $this->engine = $engine;
+
+        // 2. Instanciamos Base pasando los 2 argumentos requeridos
+        $this->base = new Base($forge, $this);
+    }
+    
+    public function get_whitelist(): array
+    {
+        return [
+            'v1' => array_merge(
+                $this->get_default_whitelist(),
+                // $this->base->get_whitelist()
+            )
+        ];
+    }
+    
     public function get_endpoints(): array
     {
-        $base = new Base(
-            $this->forge,
-            $this
-        );
 
         return [
             'v1' => array_merge(
                 $this->get_default_routes(),
-                $base->get_routes()
+                // $this->base->get_routes()
             )
         ];
-        
-        $this->test_auxiliar();
+    }
+
+    private function get_default_whitelist(): array
+    {
+        return [
+            'default' => [
+                'public' => [
+                    'status-a'
+                ],
+                'logged' => [
+                    'status-b'
+                ]
+            ]
+        ];
     }
 
     private function get_default_routes(): array
@@ -139,16 +188,20 @@ class Main extends ForgeAPI
         return [
             'default' => [
                 [
-                    'path' => 'status',
+                    'path' => 'status-a',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_default_status'],
-                    'public' => false
+                    'callback' => [$this, 'api_default_status_a']
+                ],
+                [
+                    'path' => 'status-b',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_default_status_b']
                 ]
             ]
         ];
     }
     
-    public function api_default_status(\WP_REST_Request $req)
+    public function api_default_status_a(\WP_REST_Request $req)
     {
         
         $res = new \WP_REST_Response();
@@ -157,7 +210,29 @@ class Main extends ForgeAPI
             
             return $this->send_response([
                 'slot' => 'default',
-                'name' => 'status'
+                'name' => 'status-a'
+            ]);
+            
+        } catch (Exception $e) {
+      
+            return $this->send_response(
+                $e->getMessage(),
+                $e->getCode() ?: 500,
+                false
+            );
+        }
+    }
+    
+    public function api_default_status_b(\WP_REST_Request $req)
+    {
+        
+        $res = new \WP_REST_Response();
+        
+        try {
+            
+            return $this->send_response([
+                'slot' => 'default',
+                'name' => 'status-b'
             ]);
             
         } catch (Exception $e) {
@@ -183,8 +258,8 @@ Archivo: class\Forge\Base\Main.php
 
 namespace Poeticsoft\Forge\Base;
 
-use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Heart\Engine;
+use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
@@ -234,6 +309,15 @@ class Main implements ForgeInterface
     /** @var boolean Declara si se han creado ui frontend para el proceso de carga */
     private $has_ui_frontend;
 
+    /** @var boolean Declara si se han creado overridings de core blocks */
+    private $has_ui_core_blocks;
+
+    /** @var boolean Declara si se han creado configuradores para core blocks */
+    private $has_ui_core_configs;
+
+    /** @var boolean Declara si se han creado metabopxes de edicion de posts */
+    private $has_metabox;
+
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
 
@@ -271,6 +355,9 @@ class Main implements ForgeInterface
         $this->has_blocks  = true;
         $this->has_ui_admin  = true;
         $this->has_ui_frontend  = true;
+        $this->has_ui_core_blocks  = true;
+        $this->has_ui_core_configs  = true;
+        $this->has_metabox  = true;
         $this->has_api = true;
     }
     
@@ -332,6 +419,24 @@ class Main implements ForgeInterface
     public function get_has_ui_frontend()
     {
         return $this->has_ui_frontend;
+    }
+    
+    /** @return boolean */
+    public function get_has_core_blocks()
+    {
+        return $this->has_ui_coreconfigs;
+    }
+    
+    /** @return boolean */
+    public function get_has_ui_core_configs()
+    {
+        return $this->has_ui_coreconfigs;
+    }
+    
+    /** @return boolean */
+    public function get_has_metabox()
+    {
+        return $this->has_metabox;
     }
     
     /** @return boolean */
@@ -419,7 +524,7 @@ Archivo: poeticsoft-forge-base.php
 <?php
 
 /**
- * Plugin Name: Poeticsoft Forge Base
+ * Plugin Name: Poeticsoft Forge Base !
  * Plugin URI: https://poeticsoft.com/plugins/poeticsoft-forge-base
  * Description: Base module for Poeticsoft Forge with admin panel functionality
  * Version: 0.0.0
@@ -434,7 +539,7 @@ Archivo: poeticsoft-forge-base.php
  */
 
 /**
- * Update composer classmap
+ * Update composer classmap!
  * composer dump-autoload -o
  */
 

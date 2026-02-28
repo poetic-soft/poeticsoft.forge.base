@@ -1,6 +1,6 @@
 ========================================
 ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-BASE
-Generado el: 2026-02-25 12:07:43
+Generado el: 2026-02-27 14:07:52
 ========================================
 
 ├── assets

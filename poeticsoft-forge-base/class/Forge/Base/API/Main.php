@@ -7,13 +7,27 @@ use Poeticsoft\Forge\Base\API\Base;
 
 class Main extends ForgeAPI
 {
+    protected $forge;
+    protected $engine;
+    protected $base;
+
+    public function __construct($forge, $engine)
+    {
+        
+        // 1. Asignamos las propiedades de la clase padre (ForgeAPI)
+        $this->forge = $forge;
+        $this->engine = $engine;
+
+        // 2. Instanciamos Base pasando los 2 argumentos requeridos
+        $this->base = new Base($forge, $this);
+    }
     
     public function get_whitelist(): array
     {
         return [
             'v1' => array_merge(
                 $this->get_default_whitelist(),
-                // $this->base->get_whitelist()
+                $this->base->get_whitelist()
             )
         ];
     }
@@ -24,7 +38,7 @@ class Main extends ForgeAPI
         return [
             'v1' => array_merge(
                 $this->get_default_routes(),
-                // $this->base->get_routes()
+                $this->base->get_routes()
             )
         ];
     }

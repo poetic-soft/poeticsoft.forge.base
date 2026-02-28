@@ -4,7 +4,6 @@ namespace Poeticsoft\Forge\Base;
 
 use Poeticsoft\Heart\Engine;
 use Poeticsoft\Heart\ForgeInterface;
-
 use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
@@ -241,7 +240,7 @@ class Main implements ForgeInterface
         $this->engine = $engine;
         
         // API
-        $this->api = new API();
+        $this->api = new API($this, $engine);
 
         // $this->engine->logging->log(
         //     'Forge Base module initialized via Heart helper',

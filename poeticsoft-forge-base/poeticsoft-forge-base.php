@@ -16,7 +16,7 @@
  */
 
 /**
- * Update composer classmap
+ * Update composer classmap!
  * composer dump-autoload -o
  */
 
