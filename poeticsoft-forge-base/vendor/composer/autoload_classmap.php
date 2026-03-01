@@ -9,5 +9,7 @@ return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Poeticsoft\\Forge\\Base\\API\\Main' => $baseDir . '/class/Forge/Base/API/Main.php',
     'Poeticsoft\\Forge\\Base\\API\\Section' => $baseDir . '/class/Forge/Base/API/Section.php',
+    'Poeticsoft\\Forge\\Base\\CoreBlocks\\Main' => $baseDir . '/class/Forge/Base/CoreBlocks/Main.php',
+    'Poeticsoft\\Forge\\Base\\CoreBlocks\\PostContent' => $baseDir . '/class/Forge/Base/CoreBlocks/PostContent.php',
     'Poeticsoft\\Forge\\Base\\Main' => $baseDir . '/class/Forge/Base/Main.php',
 );

@@ -5,6 +5,7 @@ namespace Poeticsoft\Forge\Base;
 use Poeticsoft\Heart\Engine;
 use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Forge\Base\API\Main as API;
+use Poeticsoft\Forge\Base\CoreBlocks\Main as CoreBlocks;
 
 /**
  * Clase Base - Implementación del módulo Forge Base.
@@ -45,7 +46,7 @@ class Main implements ForgeInterface
     private $data = [];
 
     /** @var boolean Declara si se han creado blocks para el proceso de registro */
-    private $has_blocks;
+    private $has_ui_blocks;
 
     /** @var boolean Declara si se han creado ui admin para el proceso de carga */
     private $has_ui_admin;
@@ -60,7 +61,7 @@ class Main implements ForgeInterface
     private $has_ui_core_configs;
 
     /** @var boolean Declara si se han creado metabopxes de edicion de posts */
-    private $has_metabox;
+    private $has_ui_metabox;
 
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
@@ -94,14 +95,14 @@ class Main implements ForgeInterface
         $this->id = 'forge-base';
         $this->name = 'Forge Base';
         $this->description = 'Módulo base del ecosistema Forge';
-        $this->plugin_uri  = '/wp-content/plugins/poeticsoft-forge-base';
+        $this->plugin_uri = '/wp-content/plugins/poeticsoft-forge-base';
         $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-base';
-        $this->has_blocks  = true;
-        $this->has_ui_admin  = true;
-        $this->has_ui_frontend  = true;
-        $this->has_ui_core_blocks  = true;
-        $this->has_ui_core_configs  = true;
-        $this->has_metabox  = true;
+        $this->has_ui_blocks = true;
+        $this->has_ui_admin = true;
+        $this->has_ui_frontend = true;
+        $this->has_ui_core_blocks = true;
+        $this->has_ui_core_configs = true;
+        $this->has_ui_metabox = true;
         $this->has_api = true;
     }
     
@@ -148,9 +149,9 @@ class Main implements ForgeInterface
     }
     
     /** @return boolean */
-    public function get_has_blocks()
+    public function get_has_ui_blocks()
     {
-        return $this->has_blocks;
+        return $this->has_ui_blocks;
     }
     
     /** @return boolean */
@@ -166,21 +167,21 @@ class Main implements ForgeInterface
     }
     
     /** @return boolean */
-    public function get_has_core_blocks()
+    public function get_has_ui_core_blocks()
     {
-        return $this->has_ui_coreconfigs;
+        return $this->has_ui_core_blocks;
     }
     
     /** @return boolean */
     public function get_has_ui_core_configs()
     {
-        return $this->has_ui_coreconfigs;
+        return $this->has_ui_core_configs;
     }
     
     /** @return boolean */
-    public function get_has_metabox()
+    public function get_has_ui_metabox()
     {
-        return $this->has_metabox;
+        return $this->has_ui_metabox;
     }
     
     /** @return boolean */
@@ -241,6 +242,9 @@ class Main implements ForgeInterface
         
         // API
         $this->api = new API($this, $engine);
+        
+        // Core Blocks
+        $this->core_blocks = new CoreBlocks($this, $engine);
 
         // $this->engine->logging->log(
         //     'Forge Base module initialized via Heart helper',

@@ -24,6 +24,8 @@ class ComposerStaticInit844d9cebcd216dec825d5173cd5304f0
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Poeticsoft\\Forge\\Base\\API\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/API/Main.php',
         'Poeticsoft\\Forge\\Base\\API\\Section' => __DIR__ . '/../..' . '/class/Forge/Base/API/Section.php',
+        'Poeticsoft\\Forge\\Base\\CoreBlocks\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/CoreBlocks/Main.php',
+        'Poeticsoft\\Forge\\Base\\CoreBlocks\\PostContent' => __DIR__ . '/../..' . '/class/Forge/Base/CoreBlocks/PostContent.php',
         'Poeticsoft\\Forge\\Base\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/Main.php',
     );
 
