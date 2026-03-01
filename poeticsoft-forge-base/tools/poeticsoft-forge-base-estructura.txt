@@ -1,6 +1,6 @@
 ========================================
 ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-BASE
-Generado el: 2026-02-27 14:07:52
+Generado el: 2026-03-01 01:35:44
 ========================================
 
 ├── assets
@@ -15,8 +15,8 @@ Generado el: 2026-02-27 14:07:52
 │   └── Forge
 │       └── Base
 │           ├── API
-│           │   ├── Base.php
-│           │   └── Main.php
+│           │   ├── Main.php
+│           │   └── Section.php
 │           └── Main.php
 ├── composer.json
 ├── poeticsoft-forge-base.php

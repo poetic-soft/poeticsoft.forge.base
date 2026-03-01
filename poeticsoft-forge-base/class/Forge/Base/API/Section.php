@@ -2,6 +2,7 @@
 
 namespace Poeticsoft\Forge\Base\API;
 
+use Poeticsoft\Heart;
 use Poeticsoft\Forge\Base\API\Main as API;
 
 /**
@@ -9,7 +10,7 @@ use Poeticsoft\Forge\Base\API\Main as API;
  *
  * @since 0.0.0
  */
-class Base
+class Section
 {
     protected $forge;
     protected $api;
@@ -21,18 +22,18 @@ class Base
     }
 
     /**
-     * Lista de las rutas que no han de autenticarse
+     * Lista de las rutas permitidas
      */
     public function get_whitelist()
     {
         
         return [
-            'base' => [
+            'section' => [
                 'public' => [
-                   'base/test/a'
+                   'a'
                 ],
                 'logged' => [
-                    'base/test/b'
+                   'b'
                 ]
             ]
         ];
@@ -40,38 +41,40 @@ class Base
 
     /**
      * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
-     * Este es el grupo base, plantilla para los grupos
+     * Este es el grupo section, plantilla para los grupos
      */
     public function get_routes()
     {
         
         return [
-            'base' => [
+            'section' => [
                 [
-                    'path' => 'base/test/a',
+                    'path' => 'a',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a']
+                    'callback' => [$this, 'api_section_a']
                 ],
                 [
-                    'path' => 'base/test/b',
+                    'path' => 'b',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a']
+                    'callback' => [$this, 'api_section_b']
                 ]
             ]
         ];
     }
     
-    public function api_base_test_a(\WP_REST_Request $req)
+    public function api_section_a(\WP_REST_Request $req)
     {
         
         $res = new \WP_REST_Response();
         
         try {
             
-            return $this->api->send_response([
-                'slot' => 'base',
-                'name' => 'test a'
-            ]);
+            return $this->api->send_response(
+                [
+                    'slot' => 'section',
+                    'name' => 'a'
+                ]
+            );
             
         } catch (Exception $e) {
       
@@ -83,16 +86,19 @@ class Base
         }
     }
     
-    public function api_base_test_b(\WP_REST_Request $req)
+    public function api_section_b(\WP_REST_Request $req)
     {
         
         $res = new \WP_REST_Response();
         
         try {
             
+            $user_id = get_current_user_id();
+            
             return $this->api->send_response([
-                'slot' => 'base',
-                'name' => 'test b'
+                'user_id' => $user_id,
+                'slot' => 'section',
+                'name' => 'b'
             ]);
             
         } catch (Exception $e) {

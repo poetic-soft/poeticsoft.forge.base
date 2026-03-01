@@ -7,7 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'Poeticsoft\\Forge\\Base\\API\\Base' => $baseDir . '/class/Forge/Base/API/Base.php',
     'Poeticsoft\\Forge\\Base\\API\\Main' => $baseDir . '/class/Forge/Base/API/Main.php',
+    'Poeticsoft\\Forge\\Base\\API\\Section' => $baseDir . '/class/Forge/Base/API/Section.php',
     'Poeticsoft\\Forge\\Base\\Main' => $baseDir . '/class/Forge/Base/Main.php',
 );

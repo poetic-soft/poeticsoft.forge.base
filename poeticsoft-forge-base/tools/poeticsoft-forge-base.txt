@@ -1,122 +1,6 @@
 ============================================================
 CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
-Generado el: 2026-02-27 14:07:53
-============================================================
-
-class\Forge\Base\API\Base.php
-----------------------------------------------
-Archivo: class\Forge\Base\API\Base.php
-----------------------------------------------
-
-<?php
-
-namespace Poeticsoft\Forge\Base\API;
-
-use Poeticsoft\Forge\Base\API\Main as API;
-
-/**
- * Slot de endpoints plantilla para clasificar secciones de endpoints
- *
- * @since 0.0.0
- */
-class Base
-{
-    protected $forge;
-    protected $api;
-
-    public function __construct($forge, API $parent)
-    {
-        $this->forge = $forge;
-        $this->api = $parent;
-    }
-
-    /**
-     * Lista de las rutas que no han de autenticarse
-     */
-    public function get_whitelist()
-    {
-        
-        return [
-            'base' => [
-                'public' => [
-                   'base/test/a'
-                ],
-                'logged' => [
-                    'base/test/b'
-                ]
-            ]
-        ];
-    }
-
-    /**
-     * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
-     * Este es el grupo base, plantilla para los grupos
-     */
-    public function get_routes()
-    {
-        
-        return [
-            'base' => [
-                [
-                    'path' => 'base/test/a',
-                    'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a']
-                ],
-                [
-                    'path' => 'base/test/b',
-                    'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_base_test_a']
-                ]
-            ]
-        ];
-    }
-    
-    public function api_base_test_a(\WP_REST_Request $req)
-    {
-        
-        $res = new \WP_REST_Response();
-        
-        try {
-            
-            return $this->api->send_response([
-                'slot' => 'base',
-                'name' => 'test a'
-            ]);
-            
-        } catch (Exception $e) {
-      
-            return $this->api->send_response(
-                $e->getMessage(),
-                $e->getCode() ?: 500,
-                false
-            );
-        }
-    }
-    
-    public function api_base_test_b(\WP_REST_Request $req)
-    {
-        
-        $res = new \WP_REST_Response();
-        
-        try {
-            
-            return $this->api->send_response([
-                'slot' => 'base',
-                'name' => 'test b'
-            ]);
-            
-        } catch (Exception $e) {
-      
-            return $this->api->send_response(
-                $e->getMessage(),
-                $e->getCode() ?: 500,
-                false
-            );
-        }
-    }
-}
-
-
+Generado el: 2026-03-01 01:35:44
 ============================================================
 
 class\Forge\Base\API\Main.php
@@ -129,31 +13,35 @@ Archivo: class\Forge\Base\API\Main.php
 namespace Poeticsoft\Forge\Base\API;
 
 use Poeticsoft\Heart\API\ForgeAPI;
-use Poeticsoft\Forge\Base\API\Base;
+use Poeticsoft\Forge\Base\API\Section;
 
 class Main extends ForgeAPI
 {
     protected $forge;
     protected $engine;
-    protected $base;
+    
+    // API Sections
+    protected $section;
+   // protected $otra
 
     public function __construct($forge, $engine)
     {
         
-        // 1. Asignamos las propiedades de la clase padre (ForgeAPI)
+        // Asignamos las propiedades de la clase template (ForgeAPI)
         $this->forge = $forge;
         $this->engine = $engine;
 
-        // 2. Instanciamos Base pasando los 2 argumentos requeridos
-        $this->base = new Base($forge, $this);
+        // Instanciamos secciones de la api
+        $this->section = new Section($forge, $this);
+        // $this->otra = new Otra($forge, $this);
     }
     
     public function get_whitelist(): array
     {
         return [
             'v1' => array_merge(
-                $this->get_default_whitelist(),
-                // $this->base->get_whitelist()
+                $this->section->get_whitelist(),
+                // $this->otra->get_whitelist()
             )
         ];
     }
@@ -163,59 +51,102 @@ class Main extends ForgeAPI
 
         return [
             'v1' => array_merge(
-                $this->get_default_routes(),
-                // $this->base->get_routes()
+                $this->section->get_routes(),
+                // $this->otra->get_routes()
             )
         ];
     }
+}
 
-    private function get_default_whitelist(): array
+
+============================================================
+
+class\Forge\Base\API\Section.php
+----------------------------------------------
+Archivo: class\Forge\Base\API\Section.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base\API;
+
+use Poeticsoft\Heart;
+use Poeticsoft\Forge\Base\API\Main as API;
+
+/**
+ * Slot de endpoints plantilla para clasificar secciones de endpoints
+ *
+ * @since 0.0.0
+ */
+class Section
+{
+    protected $forge;
+    protected $api;
+
+    public function __construct($forge, API $parent)
     {
+        $this->forge = $forge;
+        $this->api = $parent;
+    }
+
+    /**
+     * Lista de las rutas permitidas
+     */
+    public function get_whitelist()
+    {
+        
         return [
-            'default' => [
+            'section' => [
                 'public' => [
-                    'status-a'
+                   'a'
                 ],
                 'logged' => [
-                    'status-b'
+                   'b'
                 ]
             ]
         ];
     }
 
-    private function get_default_routes(): array
+    /**
+     * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
+     * Este es el grupo section, plantilla para los grupos
+     */
+    public function get_routes()
     {
+        
         return [
-            'default' => [
+            'section' => [
                 [
-                    'path' => 'status-a',
+                    'path' => 'a',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_default_status_a']
+                    'callback' => [$this, 'api_section_a']
                 ],
                 [
-                    'path' => 'status-b',
+                    'path' => 'b',
                     'methods' => \WP_REST_Server::READABLE,
-                    'callback' => [$this, 'api_default_status_b']
+                    'callback' => [$this, 'api_section_b']
                 ]
             ]
         ];
     }
     
-    public function api_default_status_a(\WP_REST_Request $req)
+    public function api_section_a(\WP_REST_Request $req)
     {
         
         $res = new \WP_REST_Response();
         
         try {
             
-            return $this->send_response([
-                'slot' => 'default',
-                'name' => 'status-a'
-            ]);
+            return $this->api->send_response(
+                [
+                    'slot' => 'section',
+                    'name' => 'a'
+                ]
+            );
             
         } catch (Exception $e) {
       
-            return $this->send_response(
+            return $this->api->send_response(
                 $e->getMessage(),
                 $e->getCode() ?: 500,
                 false
@@ -223,21 +154,24 @@ class Main extends ForgeAPI
         }
     }
     
-    public function api_default_status_b(\WP_REST_Request $req)
+    public function api_section_b(\WP_REST_Request $req)
     {
         
         $res = new \WP_REST_Response();
         
         try {
             
-            return $this->send_response([
-                'slot' => 'default',
-                'name' => 'status-b'
+            $user_id = get_current_user_id();
+            
+            return $this->api->send_response([
+                'user_id' => $user_id,
+                'slot' => 'section',
+                'name' => 'b'
             ]);
             
         } catch (Exception $e) {
       
-            return $this->send_response(
+            return $this->api->send_response(
                 $e->getMessage(),
                 $e->getCode() ?: 500,
                 false
@@ -524,7 +458,7 @@ Archivo: poeticsoft-forge-base.php
 <?php
 
 /**
- * Plugin Name: Poeticsoft Forge Base !
+ * Plugin Name: Poeticsoft Forge Base
  * Plugin URI: https://poeticsoft.com/plugins/poeticsoft-forge-base
  * Description: Base module for Poeticsoft Forge with admin panel functionality
  * Version: 0.0.0

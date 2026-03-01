@@ -22,8 +22,8 @@ class ComposerStaticInit844d9cebcd216dec825d5173cd5304f0
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Poeticsoft\\Forge\\Base\\API\\Base' => __DIR__ . '/../..' . '/class/Forge/Base/API/Base.php',
         'Poeticsoft\\Forge\\Base\\API\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/API/Main.php',
+        'Poeticsoft\\Forge\\Base\\API\\Section' => __DIR__ . '/../..' . '/class/Forge/Base/API/Section.php',
         'Poeticsoft\\Forge\\Base\\Main' => __DIR__ . '/../..' . '/class/Forge/Base/Main.php',
     );
 
