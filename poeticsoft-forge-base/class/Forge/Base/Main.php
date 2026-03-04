@@ -5,7 +5,8 @@ namespace Poeticsoft\Forge\Base;
 use Poeticsoft\Heart\Engine;
 use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Forge\Base\API\Main as API;
-use Poeticsoft\Forge\Base\CoreBlocks\Main as CoreBlocks;
+use Poeticsoft\Forge\Base\CoreBlock\Main as CoreBlock;
+use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
 
 /**
  * Clase Base - Implementación del módulo Forge Base.
@@ -23,6 +24,11 @@ class Main implements ForgeInterface
 
     /** @var \Poeticsoft\Heart\Engine Instancia del motor central */
     private $engine;
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Propiedades
+     */
 
     /** @var string Unique id del forge */
     private $id;
@@ -44,6 +50,12 @@ class Main implements ForgeInterface
 
     /** @var array Slot de datos dinámicos del Forge para __get & __set*/
     private $data = [];
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Funcionalidades
+     *
+     */
 
     /** @var boolean Declara si se han creado blocks para el proceso de registro */
     private $has_ui_blocks;
@@ -61,15 +73,28 @@ class Main implements ForgeInterface
     private $has_ui_core_configs;
 
     /** @var boolean Declara si se han creado metabopxes de edicion de posts */
-    private $has_ui_metabox;
+    private $has_ui_meta_boxes;
 
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Interfaces a las funcionalidades
+     *
+     */
 
     /** @var API Endpoints del Forge */
     private API $api;
 
+    /** @var CoreBlock Core blocks renders */
+    private CoreBlock $core_block;
+
+    /** @var MetaBox Post Metaboxes */
+    private MetaBox $meta_box;
+
     /**
+     * ------------------------------------------------------------------------
      * Obtiene la instancia única (Singleton).
      *
      * @return self
@@ -84,6 +109,7 @@ class Main implements ForgeInterface
     }
 
     /**
+     * ------------------------------------------------------------------------
      * Constructor privado.
      *
      */
@@ -102,15 +128,19 @@ class Main implements ForgeInterface
         $this->has_ui_frontend = true;
         $this->has_ui_core_blocks = true;
         $this->has_ui_core_configs = true;
-        $this->has_ui_metabox = true;
+        $this->has_ui_meta_boxes = true;
         $this->has_api = true;
     }
     
     /**
+     * ------------------------------------------------------------------------
      * Getters
      *
      * @since 0.0.0
      */
+    
+    // -------------------
+    // Propiedades
 
     /** @return string */
     public function get_id()
@@ -148,6 +178,9 @@ class Main implements ForgeInterface
         return $this->plugin_uri;
     }
     
+    // -------------------
+    // Funcionalidades
+    
     /** @return boolean */
     public function get_has_ui_blocks()
     {
@@ -179,9 +212,9 @@ class Main implements ForgeInterface
     }
     
     /** @return boolean */
-    public function get_has_ui_metabox()
+    public function get_has_ui_meta_boxes()
     {
-        return $this->has_ui_metabox;
+        return $this->has_ui_meta_boxes;
     }
     
     /** @return boolean */
@@ -190,10 +223,25 @@ class Main implements ForgeInterface
         return $this->has_api;
     }
     
-    /** @return boolean */
+    // -------------------
+    // Funcionalidades
+    
+    /** @return API */
     public function get_api()
     {
         return $this->api;
+    }
+    
+    /** @return CoreBlock Instance*/
+    public function get_core_block()
+    {
+        return $this->core_block;
+    }
+    
+    /** @return MetaBox */
+    public function get_meta_box()
+    {
+        return $this->meta_box;
     }
     
     /**
@@ -232,31 +280,23 @@ class Main implements ForgeInterface
      * Inicializa el módulo.
      *
      * Invocado por el Engine de Heart durante el registro.
+     * Instancia los elementos de funcionalidades
      *
      * @param \Poeticsoft\Heart\Engine $engine Instancia del motor.
      * @return void
      */
     public function init(Engine $engine)
     {
+        
         $this->engine = $engine;
         
         // API
         $this->api = new API($this, $engine);
         
         // Core Blocks
-        $this->core_blocks = new CoreBlocks($this, $engine);
-
-        // $this->engine->logging->log(
-        //     'Forge Base module initialized via Heart helper',
-        //     'INFO',
-        //     'FORGE-BASE'
-        // );
-
-        // // Uso directo de la instancia del motor inyectada
-        // $this->engine->logging->log(
-        //     'Módulo registrado: ' . $this->name,
-        //     'INFO',
-        //     'FORGE-BASE'
-        // );
+        $this->core_block = new CoreBlock($this, $engine);
+        
+        // Core Blocks
+        $this->meta_box = new MetaBox($this, $engine);
     }
 }

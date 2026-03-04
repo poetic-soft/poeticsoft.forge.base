@@ -1,6 +1,6 @@
 ============================================================
 CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
-Generado el: 2026-03-01 02:57:47
+Generado el: 2026-03-04 00:40:45
 ============================================================
 
 class\Forge\Base\API\Main.php
@@ -183,17 +183,16 @@ class Section
 
 ============================================================
 
-class\Forge\Base\CoreBlocks\Main.php
+class\Forge\Base\CoreBlock\Main.php
 ----------------------------------------------
-Archivo: class\Forge\Base\CoreBlocks\Main.php
+Archivo: class\Forge\Base\CoreBlock\Main.php
 ----------------------------------------------
 
 <?php
 
-namespace Poeticsoft\Forge\Base\CoreBlocks;
+namespace Poeticsoft\Forge\Base\CoreBlock;
 
-use Poeticsoft\Heart\API\ForgeAPI;
-use Poeticsoft\Forge\Base\API\Section;
+use Poeticsoft\Forge\Base\CoreBlock\PostContent;
 
 class Main
 {
@@ -202,25 +201,24 @@ class Main
     
     // Core Blocks
     protected $post_content;
-    // protected $otra
+    // protected $otro_block
 
     public function __construct($forge, $engine)
     {
         
-        // Asignamos las propiedades de la clase template (ForgeAPI)
         $this->forge = $forge;
         $this->engine = $engine;
 
-        // Instanciamos secciones de la api
+        // Instanciamos los bblocks
         $this->post_content = new PostContent($forge, $this);
-        // $this->otro = new Otro($forge, $this);
+        // $this->otro_block = new OtroBlock($forge, $this);
     }
     
     public function get_core_blocks(): array
     {
         return [
             'core/post-content' => $this->post_content
-            // 'otro' => $this->otro
+            // 'core/otro_block' => $this->otro_block
         ];
     }
 }
@@ -228,20 +226,19 @@ class Main
 
 ============================================================
 
-class\Forge\Base\CoreBlocks\PostContent.php
+class\Forge\Base\CoreBlock\PostContent.php
 ----------------------------------------------
-Archivo: class\Forge\Base\CoreBlocks\PostContent.php
+Archivo: class\Forge\Base\CoreBlock\PostContent.php
 ----------------------------------------------
 
 <?php
 
-namespace Poeticsoft\Forge\Base\CoreBlocks;
+namespace Poeticsoft\Forge\Base\CoreBlock;
 
-use Poeticsoft\Heart;
-use Poeticsoft\Forge\Base\CoreBlocks\Main as CoreBlocks;
+use Poeticsoft\Forge\Base\CoreBlock\Main as CoreBlock;
 
 /**
- * Slot de endpoints plantilla para clasificar secciones de endpoints
+ * Core Block Render and Logic
  *
  * @since 0.0.0
  */
@@ -250,7 +247,7 @@ class PostContent
     protected $forge;
     protected $api;
 
-    public function __construct($forge, CoreBlocks $parent)
+    public function __construct($forge, CoreBlock $parent)
     {
         $this->forge = $forge;
         $this->api = $parent;
@@ -266,7 +263,7 @@ class PostContent
             return;
         }
         
-        return '<div class="PoeticsoftHeartForgeBaseCoreBlocksPostContent">' .
+        return '<div class="PoeticsoftHeartForgeBaseCoreBlockPostContent">' .
             $blockcontent .
         '</div>';
     }
@@ -287,7 +284,8 @@ namespace Poeticsoft\Forge\Base;
 use Poeticsoft\Heart\Engine;
 use Poeticsoft\Heart\ForgeInterface;
 use Poeticsoft\Forge\Base\API\Main as API;
-use Poeticsoft\Forge\Base\CoreBlocks\Main as CoreBlocks;
+use Poeticsoft\Forge\Base\CoreBlock\Main as CoreBlock;
+use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
 
 /**
  * Clase Base - Implementación del módulo Forge Base.
@@ -305,6 +303,11 @@ class Main implements ForgeInterface
 
     /** @var \Poeticsoft\Heart\Engine Instancia del motor central */
     private $engine;
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Propiedades
+     */
 
     /** @var string Unique id del forge */
     private $id;
@@ -326,6 +329,12 @@ class Main implements ForgeInterface
 
     /** @var array Slot de datos dinámicos del Forge para __get & __set*/
     private $data = [];
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Funcionalidades
+     *
+     */
 
     /** @var boolean Declara si se han creado blocks para el proceso de registro */
     private $has_ui_blocks;
@@ -343,15 +352,28 @@ class Main implements ForgeInterface
     private $has_ui_core_configs;
 
     /** @var boolean Declara si se han creado metabopxes de edicion de posts */
-    private $has_ui_metabox;
+    private $has_ui_meta_boxes;
 
     /** @var boolean Declara si se han declarado endpoints para el proceso de registro */
     private $has_api;
+    
+    /**
+     * ------------------------------------------------------------------------
+     * Interfaces a las funcionalidades
+     *
+     */
 
     /** @var API Endpoints del Forge */
     private API $api;
 
+    /** @var CoreBlock Core blocks renders */
+    private CoreBlock $core_block;
+
+    /** @var MetaBox Post Metaboxes */
+    private MetaBox $meta_box;
+
     /**
+     * ------------------------------------------------------------------------
      * Obtiene la instancia única (Singleton).
      *
      * @return self
@@ -366,6 +388,7 @@ class Main implements ForgeInterface
     }
 
     /**
+     * ------------------------------------------------------------------------
      * Constructor privado.
      *
      */
@@ -384,15 +407,19 @@ class Main implements ForgeInterface
         $this->has_ui_frontend = true;
         $this->has_ui_core_blocks = true;
         $this->has_ui_core_configs = true;
-        $this->has_ui_metabox = true;
+        $this->has_ui_meta_boxes = true;
         $this->has_api = true;
     }
     
     /**
+     * ------------------------------------------------------------------------
      * Getters
      *
      * @since 0.0.0
      */
+    
+    // -------------------
+    // Propiedades
 
     /** @return string */
     public function get_id()
@@ -430,6 +457,9 @@ class Main implements ForgeInterface
         return $this->plugin_uri;
     }
     
+    // -------------------
+    // Funcionalidades
+    
     /** @return boolean */
     public function get_has_ui_blocks()
     {
@@ -461,9 +491,9 @@ class Main implements ForgeInterface
     }
     
     /** @return boolean */
-    public function get_has_ui_metabox()
+    public function get_has_ui_meta_boxes()
     {
-        return $this->has_ui_metabox;
+        return $this->has_ui_meta_boxes;
     }
     
     /** @return boolean */
@@ -472,10 +502,25 @@ class Main implements ForgeInterface
         return $this->has_api;
     }
     
-    /** @return boolean */
+    // -------------------
+    // Funcionalidades
+    
+    /** @return API */
     public function get_api()
     {
         return $this->api;
+    }
+    
+    /** @return CoreBlock Instance*/
+    public function get_core_block()
+    {
+        return $this->core_block;
+    }
+    
+    /** @return MetaBox */
+    public function get_meta_box()
+    {
+        return $this->meta_box;
     }
     
     /**
@@ -514,32 +559,119 @@ class Main implements ForgeInterface
      * Inicializa el módulo.
      *
      * Invocado por el Engine de Heart durante el registro.
+     * Instancia los elementos de funcionalidades
      *
      * @param \Poeticsoft\Heart\Engine $engine Instancia del motor.
      * @return void
      */
     public function init(Engine $engine)
     {
+        
         $this->engine = $engine;
         
         // API
         $this->api = new API($this, $engine);
         
         // Core Blocks
-        $this->core_blocks = new CoreBlocks($this, $engine);
+        $this->core_block = new CoreBlock($this, $engine);
+        
+        // Core Blocks
+        $this->meta_box = new MetaBox($this, $engine);
+    }
+}
 
-        // $this->engine->logging->log(
-        //     'Forge Base module initialized via Heart helper',
-        //     'INFO',
-        //     'FORGE-BASE'
-        // );
 
-        // // Uso directo de la instancia del motor inyectada
-        // $this->engine->logging->log(
-        //     'Módulo registrado: ' . $this->name,
-        //     'INFO',
-        //     'FORGE-BASE'
-        // );
+============================================================
+
+class\Forge\Base\MetaBox\Base.php
+----------------------------------------------
+Archivo: class\Forge\Base\MetaBox\Base.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base\MetaBox;
+
+use Poeticsoft\Heart as Heart;
+use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
+
+/**
+ * Slot de endpoints plantilla para clasificar secciones de endpoints
+ *
+ * @since 0.0.0
+ */
+class Base
+{
+    protected $forge;
+    protected $meta_box;
+    
+    public $id;
+    public $title;
+    public $screen;
+    public $context;
+    public $priority;
+    public $callback_args;
+
+    public function __construct($forge, MetaBox $parent)
+    {
+        $this->forge = $forge;
+        $this->meta_box = $parent;
+        
+        $this->id = 'id';
+        $this->title = 'title';
+        $this->screen = 'page';
+        $this->context = 'side';
+        $this->priority = 'default';
+        $this->callback_args = [
+            'arg' => 'value'
+        ];
+    }
+
+    public function callback($post)
+    {
+        echo '<div class="MetaBox">Meta Box</div>';
+    }
+}
+
+
+============================================================
+
+class\Forge\Base\MetaBox\Main.php
+----------------------------------------------
+Archivo: class\Forge\Base\MetaBox\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Base\MetaBox;
+
+use Poeticsoft\Forge\Base\MetaBox\Base;
+
+class Main
+{
+    protected $forge;
+    protected $engine;
+    
+    // Metaboxes
+    protected $base;
+    // protected $otro
+
+    public function __construct($forge, $engine)
+    {
+        
+        $this->forge = $forge;
+        $this->engine = $engine;
+
+        // Instanciamos Metaboxes
+        $this->base = new Base($forge, $this);
+        // $this->otro = new Otro($forge, $this);
+    }
+    
+    public function get_meta_boxes(): array
+    {
+        return [
+            $this->base
+        ];
     }
 }
 
