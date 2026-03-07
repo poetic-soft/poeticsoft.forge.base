@@ -5,7 +5,8 @@
   "scripts": {
     "blockbase": "webpack --env=block-base",
     "admin": "webpack --env=admin",
-    "frontend": "webpack --env=frontend"
+    "frontend": "webpack --env=frontend",
+    "blockcontrol": "webpack --env=blockcontrol"
   },
   "dependencies": {
     "@babel/core": "^7.18.10",

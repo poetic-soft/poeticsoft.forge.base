@@ -1,8 +1,8 @@
 <?php
 
-namespace Poeticsoft\Forge\Base\CoreBlock;
+namespace Poeticsoft\Forge\Base\BlockControl;
 
-use Poeticsoft\Forge\Base\CoreBlock\PostContent;
+use Poeticsoft\Forge\Base\BlockControl\PostContent;
 
 class Main
 {
@@ -10,7 +10,7 @@ class Main
     protected $heart;
     
     protected $post_content;
-    // protected $otro_block
+    protected $post_title;
 
     public function __construct($forge, $heart)
     {
@@ -19,14 +19,14 @@ class Main
         $this->heart = $heart;
 
         $this->post_content = new PostContent($forge, $this);
-        // $this->otro_block = new OtroBlock($forge, $this);
+        $this->post_title = new PostTitle($forge, $this);
     }
     
-    public function get_core_blocks(): array
+    public function get_block_controls(): array
     {
         return [
-            'core/post-content' => $this->post_content
-            // 'core/otro_block' => $this->otro_block
+            $this->post_content,
+            $this->post_title
         ];
     }
 }

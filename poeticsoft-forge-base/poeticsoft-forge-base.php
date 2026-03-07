@@ -35,7 +35,7 @@ add_action(
     'admin_init',
     function () {
     
-        if (!class_exists('\Poeticsoft\Heart\Engine')) {
+        if (!class_exists('\Poeticsoft\Heart\Main')) {
             
             deactivate_plugins(plugin_basename(__FILE__));
 
@@ -63,16 +63,16 @@ if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 /**
  * Registro del módulo en el motor central (Heart).
  * * Se engancha al action personalizado 'poeticsoft_heart_register'
- * que dispara el Engine durante su inicialización.
+ * que dispara el Heart durante su inicialización.
  */
 
 add_action(
     'poeticsoft_heart_register',
-    function ($engine) {
+    function ($heart) {
     
         // Usamos la clase Main del módulo actual
         $forge = \Poeticsoft\Forge\Base\Main::instance();
-        $engine->registrar_forge($forge->get_id(), $forge);
+        $heart->registrar_forge($forge->get_id(), $forge);
     },
     10
 );
@@ -83,7 +83,7 @@ add_action(
  */
 register_activation_hook(__FILE__, function () {
     
-    if (!class_exists('\Poeticsoft\Heart\Engine')) {
+    if (!class_exists('\Poeticsoft\Heart\Main')) {
         
         wp_die(
             esc_html__(

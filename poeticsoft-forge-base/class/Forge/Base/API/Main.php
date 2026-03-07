@@ -8,20 +8,17 @@ use Poeticsoft\Forge\Base\API\Section;
 class Main extends ForgeAPI
 {
     protected $forge;
-    protected $engine;
+    protected $heart;
     
-    // API Sections
     protected $section;
-   // protected $otra
+    // protected $otra
 
-    public function __construct($forge, $engine)
+    public function __construct($forge, $heart)
     {
         
-        // Asignamos las propiedades de la clase template (ForgeAPI)
         $this->forge = $forge;
-        $this->engine = $engine;
+        $this->heart = $heart;
 
-        // Instanciamos secciones de la api
         $this->section = new Section($forge, $this);
         // $this->otra = new Otra($forge, $this);
     }

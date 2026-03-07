@@ -7,19 +7,17 @@ use Poeticsoft\Forge\Base\MetaBox\Base;
 class Main
 {
     protected $forge;
-    protected $engine;
+    protected $heart;
     
-    // Metaboxes
     protected $base;
     // protected $otro
 
-    public function __construct($forge, $engine)
+    public function __construct($forge, $heart)
     {
         
         $this->forge = $forge;
-        $this->engine = $engine;
+        $this->heart = $heart;
 
-        // Instanciamos Metaboxes
         $this->base = new Base($forge, $this);
         // $this->otro = new Otro($forge, $this);
     }

@@ -5,11 +5,6 @@ namespace Poeticsoft\Forge\Base\API;
 use Poeticsoft\Heart;
 use Poeticsoft\Forge\Base\API\Main as API;
 
-/**
- * Slot de endpoints plantilla para clasificar secciones de endpoints
- *
- * @since 0.0.0
- */
 class Section
 {
     protected $forge;
@@ -21,9 +16,6 @@ class Section
         $this->api = $parent;
     }
 
-    /**
-     * Lista de las rutas permitidas
-     */
     public function get_whitelist()
     {
         
@@ -39,10 +31,6 @@ class Section
         ];
     }
 
-    /**
-     * Cada grupo (Settings, Products, etc.) define sus rutas aquí.
-     * Este es el grupo section, plantilla para los grupos
-     */
     public function get_routes()
     {
         

@@ -46,6 +46,18 @@ module.exports = env => {
       break;
 
     case 'admin':
+    case 'blockcontrol':
+
+      output = path.resolve(__dirname, pluginname + '/ui/' + type)
+
+      entry = {
+        main: './src/' + type + '/main.js'
+      }
+
+      externals = wpblockexternals
+
+      break;
+
     case 'frontend':
 
       output = path.resolve(__dirname, pluginname + '/ui/' + type)

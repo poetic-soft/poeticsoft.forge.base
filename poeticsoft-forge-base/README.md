@@ -9,7 +9,7 @@ Módulo base esencial para el ecosistema **Poeticsoft Forge**. Este plugin actú
 ## 🏗️ Arquitectura
 
 Este plugin sigue los principios de la **Arquitectura Poeticsoft**:
-- **Inyección de Dependencias**: Recibe el motor `Engine` a través de un contrato formal.
+- **Inyección de Dependencias**: Recibe el motor `Heart` a través de un contrato formal.
 - **Patrón Singleton**: Garantiza una única instancia del módulo en ejecución.
 - **Estándar PSR-12**: Código limpio, legible y profesional.
 
