@@ -1,6 +1,6 @@
 ========================================
 ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-BASE
-Generado el: 2026-03-07 00:12:55
+Generado el: 2026-03-07 22:59:34
 ========================================
 
 ├── assets
@@ -9,7 +9,11 @@ Generado el: 2026-03-07 00:12:55
 │       ├── block.json
 │       ├── build
 │       │   ├── editor.asset.php
-│       │   └── view.asset.php
+│       │   ├── editor.css
+│       │   ├── editor.js
+│       │   ├── view.asset.php
+│       │   ├── view.css
+│       │   └── view.js
 │       └── render.php
 ├── class
 │   └── Forge
@@ -25,6 +29,10 @@ Generado el: 2026-03-07 00:12:55
 │           ├── CoreBlock
 │           │   ├── Main.php
 │           │   └── PostContent.php
+│           ├── Dashboard
+│           │   ├── Base.php
+│           │   ├── Main.php
+│           │   └── Template.php
 │           ├── Main.php
 │           └── MetaBox
 │               ├── Base.php
@@ -37,9 +45,7 @@ Generado el: 2026-03-07 00:12:55
 │   │   └── main.js
 │   ├── blockcontrol
 │   │   ├── main.css
-│   │   ├── main.css.map
-│   │   ├── main.js
-│   │   └── main.js.map
+│   │   └── main.js
 │   └── frontend
 │       ├── main.css
 │       └── main.js

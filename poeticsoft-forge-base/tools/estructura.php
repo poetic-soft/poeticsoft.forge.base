@@ -24,8 +24,7 @@ function listFolder($dir, $basePath, $prefix = '')
         'tools',
         'admin/*.map',
         'frontend/*.map',
-        'build/*.js',
-        'build/*.css',
+        'blockcontrol/*.map',
         'build/*.map'
     ];
 

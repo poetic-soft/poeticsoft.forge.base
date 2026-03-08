@@ -4,6 +4,7 @@ namespace Poeticsoft\Forge\Base;
 
 use Poeticsoft\Heart\Main as Heart;
 use Poeticsoft\Heart\Forge\ForgeInterface;
+use Poeticsoft\Forge\Base\Dashboard\Main as Dashboard;
 use Poeticsoft\Forge\Base\API\Main as API;
 use Poeticsoft\Forge\Base\CoreBlock\Main as CoreBlock;
 use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
@@ -16,6 +17,7 @@ class Main implements ForgeInterface
     // -------------------------------------------------------------------------------
     
     private $heart;
+    
     private $id;
     private $name;
     private $version;
@@ -26,18 +28,21 @@ class Main implements ForgeInterface
     
     // -------------------------------------------------------------------------------
     
-    private $has_ui_blocks;
+    private $has_dashboard_widgets;
     private $has_ui_admin;
     private $has_ui_frontend;
+    private $has_ui_blocks;
     private $has_ui_core_blocks;
+    private $has_ui_block_control;
     private $has_ui_core_configs;
     private $has_ui_meta_boxes;
-    private $has_ui_block_control;
     private $has_api;
     
     // -------------------------------------------------------------------------------
     
+    private Dashboard $dashboard;
     private API $api;
+    private BlockControl $blockcontrol;
     private CoreBlock $core_block;
     private MetaBox $meta_box;
 
@@ -64,13 +69,15 @@ class Main implements ForgeInterface
         $this->description = 'Módulo base del ecosistema Forge';
         $this->plugin_uri = '/wp-content/plugins/poeticsoft-forge-base';
         $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-base';
-        $this->has_ui_blocks = true;
+        
+        $this->has_dashboard_widgets = true;
         $this->has_ui_admin = true;
         $this->has_ui_frontend = true;
+        $this->has_ui_blocks = true;
         $this->has_ui_core_blocks = true;
+        $this->has_ui_block_control = true;
         $this->has_ui_core_configs = true;
         $this->has_ui_meta_boxes = true;
-        $this->has_ui_block_control = true;
         $this->has_api = true;
     }
     
@@ -108,9 +115,9 @@ class Main implements ForgeInterface
     
     // -------------------------------------------------------------------------------
     
-    public function get_has_ui_blocks()
+    public function get_has_dashboard_widgets()
     {
-        return $this->has_ui_blocks;
+        return $this->has_dashboard_widgets;
     }
     
     public function get_has_ui_admin()
@@ -123,9 +130,19 @@ class Main implements ForgeInterface
         return $this->has_ui_frontend;
     }
     
+    public function get_has_ui_blocks()
+    {
+        return $this->has_ui_blocks;
+    }
+    
     public function get_has_ui_core_blocks()
     {
         return $this->has_ui_core_blocks;
+    }
+    
+    public function get_has_ui_block_control()
+    {
+        return $this->has_ui_block_control;
     }
     
     public function get_has_ui_core_configs()
@@ -138,17 +155,17 @@ class Main implements ForgeInterface
         return $this->has_ui_meta_boxes;
     }
     
-    public function get_has_ui_block_control()
-    {
-        return $this->has_ui_block_control;
-    }
-    
     public function get_has_api()
     {
         return $this->has_api;
     }
     
     // -------------------------------------------------------------------------------
+    
+    public function get_dashboard()
+    {
+        return $this->dashboard;
+    }
     
     public function get_api()
     {
@@ -160,14 +177,14 @@ class Main implements ForgeInterface
         return $this->core_block;
     }
     
-    public function get_meta_box()
-    {
-        return $this->meta_box;
-    }
-    
     public function get_block_control()
     {
         return $this->block_control;
+    }
+    
+    public function get_meta_box()
+    {
+        return $this->meta_box;
     }
     
     // -------------------------------------------------------------------------------
@@ -195,9 +212,10 @@ class Main implements ForgeInterface
         
         $this->heart = $heart;
         
+        $this->dashboard = new Dashboard($this, $heart);
         $this->api = new API($this, $heart);
         $this->core_block = new CoreBlock($this, $heart);
-        $this->meta_box = new MetaBox($this, $heart);
         $this->block_control = new BlockControl($this, $heart);
+        $this->meta_box = new MetaBox($this, $heart);
     }
 }

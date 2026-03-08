@@ -17,18 +17,15 @@ abstract class Template
         $this->forge = $forge;
         $this->block_control = $parent;
         
-        // Asignamos desde los métodos abstractos
         $this->block_name = $this->get_block_name();
         $this->block_attributes = $this->get_block_attributes();
         
-        // Aquí podrías añadir funcionalidad extra común para todos los slots
         $this->init();
     }
 
-    abstract public function get_block_name(): string;
-    abstract public function get_block_attributes(): array;
+    abstract public function get_block_name();
+    abstract public function get_block_attributes();
 
-    // Hook opcional para funcionalidad extra en clases hijas
     protected function init()
     {
     }

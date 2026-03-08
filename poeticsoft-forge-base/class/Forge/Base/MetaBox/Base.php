@@ -5,11 +5,6 @@ namespace Poeticsoft\Forge\Base\MetaBox;
 use Poeticsoft\Heart as Heart;
 use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
 
-/**
- * Slot de endpoints plantilla para clasificar secciones de endpoints
- *
- * @since 0.0.0
- */
 class Base
 {
     protected $forge;
