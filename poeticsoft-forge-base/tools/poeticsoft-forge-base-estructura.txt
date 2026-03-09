@@ -1,6 +1,6 @@
 ========================================
 ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-BASE
-Generado el: 2026-03-07 22:59:34
+Generado el: 2026-03-09 01:05:06
 ========================================
 
 ├── assets
@@ -24,15 +24,14 @@ Generado el: 2026-03-07 22:59:34
 │           ├── BlockControl
 │           │   ├── Main.php
 │           │   ├── PostContent.php
-│           │   ├── PostTitle.php
-│           │   └── Template.php
+│           │   └── PostTitle.php
 │           ├── CoreBlock
 │           │   ├── Main.php
 │           │   └── PostContent.php
 │           ├── Dashboard
 │           │   ├── Base.php
 │           │   ├── Main.php
-│           │   └── Template.php
+│           │   └── Otro.php
 │           ├── Main.php
 │           └── MetaBox
 │               ├── Base.php

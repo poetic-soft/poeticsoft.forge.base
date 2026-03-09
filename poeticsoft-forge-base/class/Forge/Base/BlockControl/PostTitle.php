@@ -2,9 +2,9 @@
 
 namespace Poeticsoft\Forge\Base\BlockControl;
 
-use Poeticsoft\Forge\Base\BlockControl\Template;
+use Poeticsoft\Heart\Forge\BlockControlTemplate;
 
-class PostTitle extends Template
+class PostTitle extends BlockControlTemplate
 {
     public function get_block_name(): string
     {

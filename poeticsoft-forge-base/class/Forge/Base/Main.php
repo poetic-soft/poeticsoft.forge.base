@@ -40,11 +40,11 @@ class Main implements ForgeInterface
     
     // -------------------------------------------------------------------------------
     
-    private Dashboard $dashboard;
-    private API $api;
-    private BlockControl $blockcontrol;
-    private CoreBlock $core_block;
-    private MetaBox $meta_box;
+    public Dashboard $dashboard;
+    public API $api;
+    public BlockControl $block_control;
+    public CoreBlock $core_block;
+    public MetaBox $meta_box;
 
     // -------------------------------------------------------------------------------
     
@@ -185,24 +185,6 @@ class Main implements ForgeInterface
     public function get_meta_box()
     {
         return $this->meta_box;
-    }
-    
-    // -------------------------------------------------------------------------------
-    
-    public function & __get(string $name)
-    {
-        
-        if (!isset($this->data[$name])) {
-            
-            $this->data[$name] = [];
-        }
-
-        return $this->data[$name];
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $this->data[$name] = $value;
     }
 
     // -------------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 ============================================================
 CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-BASE
-Generado el: 2026-03-07 22:59:34
+Generado el: 2026-03-09 01:05:06
 ============================================================
 
 class\Forge\Base\API\Main.php
@@ -218,9 +218,9 @@ Archivo: class\Forge\Base\BlockControl\PostContent.php
 
 namespace Poeticsoft\Forge\Base\BlockControl;
 
-use Poeticsoft\Forge\Base\BlockControl\Template;
+use Poeticsoft\Heart\Forge\BlockControlTemplate;
 
-class PostContent extends Template
+class PostContent extends BlockControlTemplate
 {
     public function get_block_name(): string
     {
@@ -255,9 +255,9 @@ Archivo: class\Forge\Base\BlockControl\PostTitle.php
 
 namespace Poeticsoft\Forge\Base\BlockControl;
 
-use Poeticsoft\Forge\Base\BlockControl\Template;
+use Poeticsoft\Heart\Forge\BlockControlTemplate;
 
-class PostTitle extends Template
+class PostTitle extends BlockControlTemplate
 {
     public function get_block_name(): string
     {
@@ -277,50 +277,6 @@ class PostTitle extends Template
     protected function init()
     {
         // Lógica específica para PostContent
-    }
-}
-
-
-============================================================
-
-class\Forge\Base\BlockControl\Template.php
-----------------------------------------------
-Archivo: class\Forge\Base\BlockControl\Template.php
-----------------------------------------------
-
-<?php
-
-namespace Poeticsoft\Forge\Base\BlockControl;
-
-use Poeticsoft\Forge\Base\BlockControl\Main as BlockControl;
-
-abstract class Template
-{
-    protected $forge;
-    protected $block_control;
-    
-    public $block_name;
-    public $block_attributes;
-
-    public function __construct($forge, BlockControl $parent)
-    {
-        $this->forge = $forge;
-        $this->block_control = $parent;
-        
-        // Asignamos desde los métodos abstractos
-        $this->block_name = $this->get_block_name();
-        $this->block_attributes = $this->get_block_attributes();
-        
-        // Aquí podrías añadir funcionalidad extra común para todos los slots
-        $this->init();
-    }
-
-    abstract public function get_block_name();
-    abstract public function get_block_attributes();
-
-    // Hook opcional para funcionalidad extra en clases hijas
-    protected function init()
-    {
     }
 }
 
@@ -418,30 +374,44 @@ Archivo: class\Forge\Base\Dashboard\Base.php
 
 namespace Poeticsoft\Forge\Base\Dashboard;
 
-use Poeticsoft\Forge\Base\Dashboard\Template;
+use Poeticsoft\Heart\Forge\DashboardTemplate;
 
-class Base extends Template
+class Base extends DashboardTemplate
 {
     public function set_values()
     {
         
         $this->id = 'base';
         $this->title = 'Base';
+        $this->description = 'Dashboard Base del Forge Base';
         $this->args = [];
         $this->context = 'normal'; // 'normal', 'side', 'column3', or 'column4'. Default 'normal'
         $this->priority = 'core'; // 'high', 'core', 'default', or 'low'. Default 'core'.
+        
+        $this->options = [
+            [
+                'key' => 'string_a',
+                'field_type' => 'string',
+                'title' => 'Base String A',
+                'description' => 'Option Base String A',
+                'value' => 'default',
+                'type' => 'text'
+            ],
+            [
+                'key' => 'string_b',
+                'field_type' => 'string',
+                'title' => 'Base String B',
+                'description' => 'Option Base String B',
+                'value' => 'default',
+                'type' => 'text'
+            ]
+        ];
     }
     
     public function content()
     {
         
-        echo '<div class="Content">Content</div>';
-    }
-    
-    public function controls()
-    {
-        
-        echo '<div class="Controls">Controls</div>';
+        echo '<div class="Content">Content Base Forge Base</div>';
     }
 }
 
@@ -458,6 +428,7 @@ Archivo: class\Forge\Base\Dashboard\Main.php
 namespace Poeticsoft\Forge\Base\Dashboard;
 
 use Poeticsoft\Forge\Base\Dashboard\Base;
+use Poeticsoft\Forge\Base\Dashboard\Otro;
 
 class Main
 {
@@ -465,7 +436,7 @@ class Main
     protected $heart;
     
     protected $base;
-    // protected $otro
+    protected $otro;
 
     public function __construct($forge, $heart)
     {
@@ -473,8 +444,8 @@ class Main
         $this->forge = $forge;
         $this->heart = $heart;
 
-        $this->base = new Base($forge, $this);
-        // $this->otro = new Otro($forge, $this);
+        $this->base = new Base($this, $forge);
+        $this->otro = new Otro($this, $forge);
     }
     
     public function get_dashboard_widgets(): array
@@ -488,36 +459,54 @@ class Main
 
 ============================================================
 
-class\Forge\Base\Dashboard\Template.php
+class\Forge\Base\Dashboard\Otro.php
 ----------------------------------------------
-Archivo: class\Forge\Base\Dashboard\Template.php
+Archivo: class\Forge\Base\Dashboard\Otro.php
 ----------------------------------------------
 
 <?php
 
 namespace Poeticsoft\Forge\Base\Dashboard;
 
-use Poeticsoft\Forge\Base\Dashboard\Main as Dashboard;
+use Poeticsoft\Heart\Forge\DashboardTemplate;
 
-abstract class Template
+class Otro extends DashboardTemplate
 {
-    protected $dashboard;
-    
-    public $id;
-    public $title;
-    public $args;
-    public $context;
-    public $priority;
-
-    public function __construct($forge, Dashboard $dashboard)
+    public function set_values()
     {
-        $this->dashboard = $dashboard;
-        $this->set_values();
+        
+        $this->id = 'otro';
+        $this->title = 'Otro';
+        $this->description = 'Dashboard Otro del Forge Base';
+        $this->args = [];
+        $this->context = 'normal'; // 'normal', 'side', 'column3', or 'column4'. Default 'normal'
+        $this->priority = 'core'; // 'high', 'core', 'default', or 'low'. Default 'core'.
+        
+        $this->options = [
+            [
+                'key' => 'string_a',
+                'field_type' => 'string',
+                'title' => 'Otro String A',
+                'description' => 'Option Otro String A',
+                'value' => 'default',
+                'type' => 'text'
+            ],
+            [
+                'key' => 'string_b',
+                'field_type' => 'string',
+                'title' => 'Otro String B',
+                'description' => 'Option Otro String B',
+                'value' => 'default',
+                'type' => 'text'
+            ]
+        ];
     }
-
-    abstract public function set_values();
-    abstract public function content();
-    abstract public function controls();
+    
+    public function content()
+    {
+        
+        echo '<div class="Content">Content Otro Forge Base</div>';
+    }
 }
 
 
@@ -570,11 +559,11 @@ class Main implements ForgeInterface
     
     // -------------------------------------------------------------------------------
     
-    private Dashboard $dashboard;
-    private API $api;
-    private BlockControl $blockcontrol;
-    private CoreBlock $core_block;
-    private MetaBox $meta_box;
+    public Dashboard $dashboard;
+    public API $api;
+    public BlockControl $block_control;
+    public CoreBlock $core_block;
+    public MetaBox $meta_box;
 
     // -------------------------------------------------------------------------------
     
@@ -716,24 +705,6 @@ class Main implements ForgeInterface
     {
         return $this->meta_box;
     }
-    
-    // -------------------------------------------------------------------------------
-    
-    public function & __get(string $name)
-    {
-        
-        if (!isset($this->data[$name])) {
-            
-            $this->data[$name] = [];
-        }
-
-        return $this->data[$name];
-    }
-
-    public function __set(string $name, $value): void
-    {
-        $this->data[$name] = $value;
-    }
 
     // -------------------------------------------------------------------------------
     
@@ -765,11 +736,6 @@ namespace Poeticsoft\Forge\Base\MetaBox;
 use Poeticsoft\Heart as Heart;
 use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
 
-/**
- * Slot de endpoints plantilla para clasificar secciones de endpoints
- *
- * @since 0.0.0
- */
 class Base
 {
     protected $forge;
