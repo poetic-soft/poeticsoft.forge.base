@@ -2,7 +2,7 @@
 
 namespace Poeticsoft\Forge\Base\BlockControl;
 
-use Poeticsoft\Heart\Forge\BlockControlTemplate;
+use Poeticsoft\Heart\Template\BlockControl as BlockControlTemplate;
 
 class PostContent extends BlockControlTemplate
 {
@@ -20,7 +20,7 @@ class PostContent extends BlockControlTemplate
             ]
         ];
     }
-    
+
     protected function init()
     {
         // Lógica específica para PostContent

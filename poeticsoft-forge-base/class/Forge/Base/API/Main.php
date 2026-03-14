@@ -2,27 +2,27 @@
 
 namespace Poeticsoft\Forge\Base\API;
 
-use Poeticsoft\Heart\API\ForgeAPI;
+use Poeticsoft\Heart\Template\API as ForgeAPI;
 use Poeticsoft\Forge\Base\API\Section;
 
 class Main extends ForgeAPI
 {
     protected $forge;
     protected $heart;
-    
+
     protected $section;
     // protected $otra
 
     public function __construct($forge, $heart)
     {
-        
+
         $this->forge = $forge;
         $this->heart = $heart;
 
         $this->section = new Section($forge, $this);
         // $this->otra = new Otra($forge, $this);
     }
-    
+
     public function get_whitelist(): array
     {
         return [
@@ -32,7 +32,7 @@ class Main extends ForgeAPI
             )
         ];
     }
-    
+
     public function get_endpoints(): array
     {
 

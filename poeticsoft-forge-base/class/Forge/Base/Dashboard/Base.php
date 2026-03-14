@@ -2,17 +2,17 @@
 
 namespace Poeticsoft\Forge\Base\Dashboard;
 
-use Poeticsoft\Heart\Forge\DashboardTemplate;
+use Poeticsoft\Heart\Template\Dashboard as DashboardTemplate;
 
 class Base extends DashboardTemplate
 {
     public function set_values()
     {
-        
+
         $this->id = 'base';
         $this->title = 'Base';
         $this->description = 'Dashboard Base del Forge Base';
-        
+
         $this->options = [
             [
                 'key' => 'string_a',
