@@ -11,7 +11,7 @@
         {
           "match": ".\\poeticsoft-forge-base\\.*", 
           "isShellCommand": true,
-            "cmd": "xcopy \"${workspaceFolder}\\poeticsoft-forge-base\\*\" \"G:\\local.sites\\heart\\app\\public\\wp-content\\plugins\\poeticsoft-forge-base\\\" /s /e /y /i /d && powershell -Command \"$wshell = New-Object -ComObject wscript.shell; if(false && $wshell.AppActivate('Chrome')){ Sleep 1; $wshell.SendKeys('{F5}') }\""
+            "cmd": "powershell -Command \"$wshell = New-Object -ComObject WScript.Shell; if (false && $wshell.AppActivate('Chrome')) { Start-Sleep -Milliseconds 250; $wshell.SendKeys('{F5}') }\""
         }
       ]
     }

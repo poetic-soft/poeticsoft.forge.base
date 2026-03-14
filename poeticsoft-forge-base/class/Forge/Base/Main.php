@@ -35,7 +35,7 @@ class Main implements ForgeInterface
     private $has_ui_core_blocks;
     private $has_ui_block_control;
     private $has_ui_core_configs;
-    private $has_ui_meta_boxes;
+    private $has_ui_metaboxes;
     private $has_api;
     
     // -------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ class Main implements ForgeInterface
     public API $api;
     public BlockControl $block_control;
     public CoreBlock $core_block;
-    public MetaBox $meta_box;
+    public MetaBox $metabox;
 
     // -------------------------------------------------------------------------------
     
@@ -77,7 +77,7 @@ class Main implements ForgeInterface
         $this->has_ui_core_blocks = true;
         $this->has_ui_block_control = true;
         $this->has_ui_core_configs = true;
-        $this->has_ui_meta_boxes = true;
+        $this->has_ui_metaboxes = true;
         $this->has_api = true;
     }
     
@@ -150,9 +150,9 @@ class Main implements ForgeInterface
         return $this->has_ui_core_configs;
     }
     
-    public function get_has_ui_meta_boxes()
+    public function get_has_ui_metaboxes()
     {
-        return $this->has_ui_meta_boxes;
+        return $this->has_ui_metaboxes;
     }
     
     public function get_has_api()
@@ -182,9 +182,9 @@ class Main implements ForgeInterface
         return $this->block_control;
     }
     
-    public function get_meta_box()
+    public function get_metabox()
     {
-        return $this->meta_box;
+        return $this->metabox;
     }
 
     // -------------------------------------------------------------------------------
@@ -198,6 +198,6 @@ class Main implements ForgeInterface
         $this->api = new API($this, $heart);
         $this->core_block = new CoreBlock($this, $heart);
         $this->block_control = new BlockControl($this, $heart);
-        $this->meta_box = new MetaBox($this, $heart);
+        $this->metabox = new MetaBox($this, $heart);
     }
 }

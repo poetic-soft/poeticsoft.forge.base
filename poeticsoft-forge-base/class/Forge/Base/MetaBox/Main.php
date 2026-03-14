@@ -22,7 +22,7 @@ class Main
         // $this->otro = new Otro($forge, $this);
     }
     
-    public function get_meta_boxes(): array
+    public function get_metaboxes(): array
     {
         return [
             $this->base

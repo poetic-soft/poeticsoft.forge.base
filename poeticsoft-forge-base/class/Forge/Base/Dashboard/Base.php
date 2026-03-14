@@ -12,9 +12,6 @@ class Base extends DashboardTemplate
         $this->id = 'base';
         $this->title = 'Base';
         $this->description = 'Dashboard Base del Forge Base';
-        // $this->args = [];
-        $this->context = 'normal'; // 'normal', 'side', 'column3', or 'column4'. Default 'normal'
-        $this->priority = 'core'; // 'high', 'core', 'default', or 'low'. Default 'core'.
         
         $this->options = [
             [

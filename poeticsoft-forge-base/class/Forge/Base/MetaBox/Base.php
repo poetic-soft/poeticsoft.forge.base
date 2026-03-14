@@ -8,7 +8,7 @@ use Poeticsoft\Forge\Base\MetaBox\Main as MetaBox;
 class Base
 {
     protected $forge;
-    protected $meta_box;
+    protected $metabox;
     
     public $id;
     public $title;
@@ -20,7 +20,7 @@ class Base
     public function __construct($forge, MetaBox $parent)
     {
         $this->forge = $forge;
-        $this->meta_box = $parent;
+        $this->metabox = $parent;
         
         $this->id = 'id';
         $this->title = 'title';
