@@ -1,0 +1,23 @@
+========================================
+ESTRUCTURA DEL PROYECTO: POETICSOFT-FORGE-ALEXANDRIA
+Generado el: 2026-03-18 21:23:24
+========================================
+
+├── assets
+├── class
+│   └── Forge
+│       └── Alexandria
+│           ├── API
+│           │   ├── Main.php
+│           │   └── Sections.php
+│           ├── Dashboard
+│           │   ├── Main.php
+│           │   └── Sections.php
+│           └── Main.php
+├── composer.json
+├── poeticsoft-forge-alexandria.php
+├── ui
+│   └── admin
+│       ├── main.css
+│       └── main.js
+└── uninstall.php

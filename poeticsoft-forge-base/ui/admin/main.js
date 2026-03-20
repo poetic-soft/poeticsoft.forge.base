@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/admin/js/portal/dashboard-base/dashboard-base.js"
-/*!**************************************************************!*\
-  !*** ./src/admin/js/portal/dashboard-base/dashboard-base.js ***!
-  \**************************************************************/
+/***/ "./src/admin/js/portal/dashboard-sections/dashboard-sections.js"
+/*!**********************************************************************!*\
+  !*** ./src/admin/js/portal/dashboard-sections/dashboard-sections.js ***!
+  \**********************************************************************/
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -14,10 +14,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (_ref) {
   var data = _ref.data;
-  console.log(data);
   return /*#__PURE__*/React.createElement("div", {
     className: "dashboard-base"
-  }, "DASHBOARD BASE");
+  }, "DASHBOARD BASE!");
 });
 
 /***/ },
@@ -121,12 +120,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   portalsMap: () => (/* binding */ portalsMap)
 /* harmony export */ });
-/* harmony import */ var _dashboard_base_dashboard_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dashboard-base/dashboard-base */ "./src/admin/js/portal/dashboard-base/dashboard-base.js");
+/* harmony import */ var _dashboard_sections_dashboard_sections__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dashboard-sections/dashboard-sections */ "./src/admin/js/portal/dashboard-sections/dashboard-sections.js");
 
 var portalsMap = {
-  '.postbox .DashboardWidget.base': {
+  '.postbox .DashboardWidget.poeticsoft_heart_forge_alexandria_sections': {
     target: '.Portal',
-    comp: /*#__PURE__*/React.createElement(_dashboard_base_dashboard_base__WEBPACK_IMPORTED_MODULE_0__["default"], null)
+    comp: /*#__PURE__*/React.createElement(_dashboard_sections_dashboard_sections__WEBPACK_IMPORTED_MODULE_0__["default"], null)
   }
 };
 

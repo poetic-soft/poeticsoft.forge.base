@@ -1,0 +1,610 @@
+============================================================
+CÓDIGO INTEGRAL DEL PLUGIN: POETICSOFT-FORGE-ALEXANDRIA
+Generado el: 2026-03-18 21:23:24
+============================================================
+
+class\Forge\Alexandria\API\Main.php
+----------------------------------------------
+Archivo: class\Forge\Alexandria\API\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Alexandria\API;
+
+use Poeticsoft\Heart\Template\API as ForgeAPI;
+use Poeticsoft\Forge\Alexandria\Sections;
+
+class Main extends ForgeAPI
+{
+    protected $forge;
+    protected $heart;
+
+    protected $section;
+
+    public function __construct($heart, $forge)
+    {
+
+        $this->heart = $heart;
+        $this->forge = $forge;
+
+        $this->section = new Sections($this, $forge);
+    }
+
+    public function get_whitelist(): array
+    {
+        return [
+            'v1' => array_merge(
+                $this->section->get_whitelist()
+            )
+        ];
+    }
+
+    public function get_endpoints(): array
+    {
+
+        return [
+            'v1' => array_merge(
+                $this->section->get_routes()
+            )
+        ];
+    }
+}
+
+
+============================================================
+
+class\Forge\Alexandria\API\Sections.php
+----------------------------------------------
+Archivo: class\Forge\Alexandria\API\Sections.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Alexandria\API;
+
+use Poeticsoft\Heart;
+use Poeticsoft\Forge\Alexandria\API\Main as API;
+
+class Sections
+{
+    protected $forge;
+    protected $api;
+
+    public function __construct(API $parent, $forge)
+    {
+        $this->forge = $forge;
+        $this->api = $parent;
+    }
+
+    public function get_whitelist()
+    {
+
+        return [
+            'sections' => [
+                'public' => [
+                    'a'
+                ],
+                'logged' => [
+                    'b'
+                ]
+            ]
+        ];
+    }
+
+    public function get_routes()
+    {
+
+        return [
+            'sections' => [
+                [
+                    'path' => 'a',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_section_a']
+                ],
+                [
+                    'path' => 'b',
+                    'methods' => \WP_REST_Server::READABLE,
+                    'callback' => [$this, 'api_section_b']
+                ]
+            ]
+        ];
+    }
+
+    public function api_section_a(\WP_REST_Request $req)
+    {
+
+        $res = new \WP_REST_Response();
+
+        try {
+
+            return $this->api->send_response(
+                [
+                    'slot' => 'sections',
+                    'name' => 'a'
+                ]
+            );
+        } catch (Exception $e) {
+
+            return $this->api->send_response(
+                $e->getMessage(),
+                $e->getCode() ?: 500,
+                false
+            );
+        }
+    }
+
+    public function api_section_b(\WP_REST_Request $req)
+    {
+
+        $res = new \WP_REST_Response();
+
+        try {
+
+            $user_id = get_current_user_id();
+
+            return $this->api->send_response([
+                'user_id' => $user_id,
+                'slot' => 'sections',
+                'name' => 'b'
+            ]);
+        } catch (Exception $e) {
+
+            return $this->api->send_response(
+                $e->getMessage(),
+                $e->getCode() ?: 500,
+                false
+            );
+        }
+    }
+}
+
+
+============================================================
+
+class\Forge\Alexandria\Dashboard\Main.php
+----------------------------------------------
+Archivo: class\Forge\Alexandria\Dashboard\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Alexandria\Dashboard;
+
+use Poeticsoft\Heart\Main as Heart;
+use Poeticsoft\Forge\Alexandria\Dashboard\Sections;
+
+class Main
+{
+    protected $forge;
+    protected $heart;
+
+    protected $sections;
+
+    public function __construct($forge, $heart)
+    {
+
+        $this->forge = $forge;
+
+        $this->sections = new Sections($this, $heart, $forge);
+    }
+
+    public function get_dashboard_widgets(): array
+    {
+        return [
+            $this->sections
+        ];
+    }
+}
+
+
+============================================================
+
+class\Forge\Alexandria\Dashboard\Sections.php
+----------------------------------------------
+Archivo: class\Forge\Alexandria\Dashboard\Sections.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Alexandria\Dashboard;
+
+use Poeticsoft\Heart\Template\Dashboard as DashboardTemplate;
+
+class Sections extends DashboardTemplate
+{
+    public function set_values()
+    {
+
+        $this->id = 'sections';
+        $this->title = 'Sections';
+        $this->description = 'Dashboard Sections del Forge Alexandria';
+
+        $this->options = [
+            [
+                'key' => 'string_a',
+                'field_type' => 'string',
+                'title' => 'Base String A',
+                'description' => 'Option Base String A',
+                'value' => 'default',
+                'type' => 'text'
+            ]
+        ];
+    }
+}
+
+
+============================================================
+
+class\Forge\Alexandria\Main.php
+----------------------------------------------
+Archivo: class\Forge\Alexandria\Main.php
+----------------------------------------------
+
+<?php
+
+namespace Poeticsoft\Forge\Alexandria;
+
+use Poeticsoft\Heart\Main as Heart;
+use Poeticsoft\Heart\Interface\Forge as ForgeInterface;
+use Poeticsoft\Forge\Alexandria\Dashboard\Main as Dashboard;
+
+class Main implements ForgeInterface
+{
+    private static $instance = null;
+
+    // -------------------------------------------------------------------------------
+
+    private $heart;
+
+    private $id;
+    private $name;
+    private $version;
+    private $description;
+    private $plugin_path;
+    private $plugin_url;
+
+    // -------------------------------------------------------------------------------
+
+    private $has_dashboard_widgets;
+    private $has_ui_admin;
+    private $has_ui_frontend;
+    private $has_ui_blocks;
+    private $has_ui_core_blocks;
+    private $has_ui_block_control;
+    private $has_ui_core_configs;
+    private $has_ui_metaboxes;
+    private $has_api;
+    private $has_ai;
+
+    // -------------------------------------------------------------------------------
+
+    public Dashboard $dashboard;
+
+    // -------------------------------------------------------------------------------
+
+    public static function instance()
+    {
+        if (null === self::$instance) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    // -------------------------------------------------------------------------------
+
+    private function __construct()
+    {
+
+        // Metadatos
+        $this->version = '0.0.0';
+        $this->id = 'forge-alexandria';
+        $this->name = 'Forge Alexandria';
+        $this->description = 'Módulo base del ecosistema Forge';
+        $this->plugin_url = '/wp-content/plugins/poeticsoft-forge-alexandria';
+        $this->plugin_path = WP_PLUGIN_DIR . '/poeticsoft-forge-alexandria';
+
+        $this->has_dashboard_widgets = true;
+        $this->has_ui_admin = true;
+        $this->has_ui_frontend = false;
+        $this->has_ui_blocks = false;
+        $this->has_ui_core_blocks = false;
+        $this->has_ui_block_control = false;
+        $this->has_ui_core_configs = false;
+        $this->has_ui_metaboxes = false;
+        $this->has_api = false;
+        $this->has_ai = false;
+    }
+
+    // -------------------------------------------------------------------------------
+
+    public function get_id()
+    {
+        return $this->id;
+    }
+
+    public function get_name()
+    {
+        return $this->name;
+    }
+
+    public function get_version()
+    {
+        return $this->version;
+    }
+
+    public function get_description()
+    {
+        return $this->description;
+    }
+
+    public function get_plugin_path()
+    {
+        return $this->plugin_path;
+    }
+
+    public function get_plugin_url()
+    {
+        return $this->plugin_url;
+    }
+
+    // -------------------------------------------------------------------------------
+
+    public function get_has_dashboard_widgets()
+    {
+        return $this->has_dashboard_widgets;
+    }
+
+    public function get_has_ui_admin()
+    {
+        return $this->has_ui_admin;
+    }
+
+    public function get_has_ui_frontend()
+    {
+        return $this->has_ui_frontend;
+    }
+
+    public function get_has_ui_blocks()
+    {
+        return $this->has_ui_blocks;
+    }
+
+    public function get_has_ui_core_blocks()
+    {
+        return $this->has_ui_core_blocks;
+    }
+
+    public function get_has_ui_block_control()
+    {
+        return $this->has_ui_block_control;
+    }
+
+    public function get_has_ui_core_configs()
+    {
+        return $this->has_ui_core_configs;
+    }
+
+    public function get_has_ui_metaboxes()
+    {
+        return $this->has_ui_metaboxes;
+    }
+
+    public function get_has_api()
+    {
+        return $this->has_api;
+    }
+
+    public function get_has_ai()
+    {
+        return $this->has_ai;
+    }
+
+    // -------------------------------------------------------------------------------
+
+    public function get_dashboard()
+    {
+        return $this->dashboard;
+    }
+
+    public function get_api()
+    {
+        return $this->api;
+    }
+
+    public function get_core_block()
+    {
+        return $this->core_block;
+    }
+
+    public function get_block_control()
+    {
+        return $this->block_control;
+    }
+
+    public function get_metabox()
+    {
+        return $this->metabox;
+    }
+
+    // -------------------------------------------------------------------------------
+
+    public function init(Heart $heart)
+    {
+
+        $this->heart = $heart;
+
+        $this->dashboard = new Dashboard($this, $heart);
+    }
+}
+
+
+============================================================
+
+poeticsoft-forge-alexandria.php
+----------------------------------------------
+Archivo: poeticsoft-forge-alexandria.php
+----------------------------------------------
+
+<?php
+
+/**
+ * Plugin Name: Poeticsoft Forge Alexandria
+ * Plugin URI: https://poeticsoft.com/plugins/poeticsoft-forge-alexandria
+ * Description: Base module for Poeticsoft Forge with admin panel functionality
+ * Version: 0.0.0
+ * Requires at least: 5.8
+ * Requires PHP: 7.4
+ * Author: Poeticsoft Team
+ * License: GPL-3.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Author URI: https://poeticsoft.com/team
+ * Text Domain: poeticsoft-forge-alexandria
+ * Domain Path: /languages
+ */
+
+/**
+ * Update composer classmap!
+ * composer dump-autoload -o
+ */
+
+/**
+ * Verificación de seguridad: Evitar acceso directo.
+ */
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+/**
+ * Control de Dependencia: Verifica si Poeticsoft Heart está activo.
+ * Si no está presente, el plugin se desactiva automáticamente con un aviso.
+ */
+add_action(
+    'admin_init',
+    function () {
+
+        if (!class_exists('\Poeticsoft\Heart\Main')) {
+
+            deactivate_plugins(plugin_basename(__FILE__));
+
+            add_action('admin_notices', function () {
+
+                $message = __(
+                    'Poeticsoft Forge Alexandria requiere que el plugin
+                     Poeticsoft Heart esté activado.',
+                    'poeticsoft-forge-alexandria'
+                );
+
+                echo '<div class="error"><p><strong>' . esc_html($message) . '</strong></p></div>';
+            });
+        }
+    }
+);
+
+/**
+ * Carga del autoloader de Composer para este módulo.
+ */
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
+/**
+ * Registro del módulo en el motor central (Heart).
+ * * Se engancha al action personalizado 'poeticsoft_heart_register'
+ * que dispara el Heart durante su inicialización.
+ */
+
+add_action(
+    'poeticsoft_heart_register',
+    function ($heart) {
+
+        // Usamos la clase Main del módulo actual
+        $forge = \Poeticsoft\Forge\Alexandria\Main::instance();
+        $heart->registrar_forge($forge->get_id(), $forge);
+    },
+    10
+);
+
+/**
+ * Hook de activación.
+ * Previene la activación si el núcleo no está presente.
+ */
+register_activation_hook(__FILE__, function () {
+
+    if (!class_exists('\Poeticsoft\Heart\Main')) {
+
+        wp_die(
+            esc_html__(
+                'Este plugin requiere Poeticsoft Heart para funcionar.',
+                'poeticsoft-forge-base'
+            ),
+            esc_html__(
+                'Dependencia Requerida',
+                'poeticsoft-forge-base'
+            ),
+            ['back_link' => true]
+        );
+    }
+});
+
+/**
+ * Hook de desactivación.
+ * Limpia la caché del sistema para evitar residuos de hooks.
+ */
+register_deactivation_hook(__FILE__, function () {
+
+    if (function_exists('wp_cache_flush')) {
+
+        wp_cache_flush();
+    }
+});
+
+
+============================================================
+
+uninstall.php
+----------------------------------------------
+Archivo: uninstall.php
+----------------------------------------------
+
+<?php
+
+/**
+ * Script de desinstalación para Poeticsoft Forge Base.
+ *
+ * Este archivo se ejecuta cuando el usuario elimina el plugin desde el panel.
+ * Se encarga de limpiar cualquier rastro específico de este módulo.
+ *
+ * @package Poeticsoft\Forge
+ * @since 0.0.1
+ */
+
+namespace Poeticsoft\Forge;
+
+/**
+ * Verificación de seguridad: Salir si no es una llamada oficial de WordPress.
+ */
+if (!defined('WP_UNINSTALL_PLUGIN')) {
+    exit;
+}
+
+/**
+ * Limpieza de caché.
+ * Asegura que no queden rastros de hooks o estados del módulo en el sistema de objetos.
+ */
+if (function_exists('wp_cache_flush')) {
+    wp_cache_flush();
+}
+
+/**
+ * Nota para el futuro:
+ * Si este módulo llegara a guardar configuraciones en la base de datos (options),
+ * aquí es donde deberías añadir:
+ * delete_option('poeticsoft_forge_base_settings');
+ */
+
+
+============================================================
+

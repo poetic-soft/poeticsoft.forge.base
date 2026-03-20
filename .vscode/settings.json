@@ -1,8 +1,8 @@
 {
-  "phpcs.executablePath": ".\\poeticsoft-forge-base\\vendor\\bin\\phpcs.bat",
-  "phpcbf.executablePath": ".\\poeticsoft-forege-base\\vendor\\bin\\phpcbf.bat",
-  "phpcs.standard": "poeticsoft-forge-base\\phpcs.xml",
-  "phpcbf.standard": "poeticsoft-forge-base\\phpcs.xml",
+  "phpcs.executablePath": ".\\poeticsoft-forge-alexandria\\vendor\\bin\\phpcs.bat",
+  "phpcbf.executablePath": ".\\poeticsoft-forege-alexandria\\vendor\\bin\\phpcbf.bat",
+  "phpcs.standard": "poeticsoft-forge-alexandria\\phpcs.xml",
+  "phpcbf.standard": "poeticsoft-forge-alexandria\\phpcs.xml",
   "phpcs.ignore": [
     "**/vendor/*",
     "**/cache/*",
